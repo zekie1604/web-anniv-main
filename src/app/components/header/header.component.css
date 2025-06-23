@@ -1,0 +1,222 @@
+.labidabs-brand {
+  font-family: 'Poppins', 'Quicksand', 'Montserrat', Arial, sans-serif;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, #ffb6e6 30%, #ffd6ec 70%, #a3c2f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 8px rgba(163,194,247,0.12), 0 1px 0 #fff;
+  margin-left: 0.2em;
+}
+
+nav, .nav-main {
+  margin-right: 32px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  nav, .nav-main {
+    display: none !important;
+  }
+  .md\:hidden {
+    display: block !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .labidabs-brand {
+    display: none !important;
+  }
+  nav, .nav-main {
+    gap: 0.05rem;
+    margin-right: 0.5vw;
+    font-size: 0.85rem;
+    padding-right: 0.1rem;
+    flex-wrap: wrap;
+    min-width: 0;
+    max-width: 100vw;
+    letter-spacing: -0.01em;
+  }
+  nav .nav-link, .nav-main .nav-link {
+    padding: 0.1rem 0.3rem;
+    min-width: unset;
+  }
+}
+
+.md\:hidden {
+  display: none;
+}
+
+/* Mobile dropdown styles */
+@media (max-width: 900px) {
+  .mobile-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vw;
+    background: #fff;
+    color: #222;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+    z-index: 100;
+    border-radius: 0 0 12px 12px;
+    animation: fadeIn 0.2s;
+  }
+  .mobile-dropdown ul {
+    padding: 0.5rem 0;
+    margin: 0;
+    list-style: none;
+  }
+  .mobile-dropdown li {
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .mobile-dropdown li:last-child {
+    border-bottom: none;
+  }
+  .mobile-dropdown a,
+  .mobile-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background: none;
+    border: none;
+    text-align: left;
+    color: #222;
+    font-size: 1.08rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .mobile-dropdown a:hover,
+  .mobile-dropdown button:hover {
+    background: #f3f6fa;
+  }
+  .mobile-dropdown .pl-8 {
+    padding-left: 2.5rem;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Burger menu styles for mobile */
+@media (max-width: 900px) {
+  .burger-btn {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    left: auto;
+    z-index: 120;
+    background: none;
+    border: none;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+  }
+  .burger-dropdown {
+    position: absolute;
+    top: 56px;
+    right: 16px;
+    left: auto;
+    min-width: 210px;
+    max-width: 90vw;
+    background: rgba(18, 18, 18, 0.98);
+    color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 32px 0 rgba(0,0,0,0.32), 0 1.5px 6px 0 rgba(0,0,0,0.10);
+    z-index: 110;
+    padding: 0.5rem 0;
+    animation: fadeIn 0.18s;
+    font-family: inherit;
+  }
+  .burger-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .burger-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.13rem;
+    padding: 0.7rem 1.2rem;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.13s, color 0.13s;
+    gap: 0.85rem;
+    font-weight: 500;
+    outline: none;
+  }
+  .burger-item:hover, .burger-item:focus {
+    background: rgba(255,255,255,0.08);
+    color: #a3c2f7;
+  }
+  .burger-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    min-height: 28px;
+    margin-right: 0.2rem;
+    color: #a3c2f7;
+  }
+  .burger-label {
+    flex: 1 1 auto;
+    text-align: left;
+    font-size: 1.13rem;
+    letter-spacing: 0.01em;
+    font-weight: 500;
+  }
+  .burger-chevron {
+    display: flex;
+    align-items: center;
+    margin-left: 0.2rem;
+    transition: transform 0.18s;
+  }
+  .burger-chevron svg {
+    stroke: #fff;
+    width: 18px;
+    height: 18px;
+  }
+  .burger-chevron.open {
+    transform: rotate(180deg);
+  }
+  .burger-sub-list {
+    list-style: none;
+    margin: 0 0 0 0.5rem;
+    padding: 0 0 0 0.5rem;
+    border-left: 2px solid #232323;
+  }
+  .burger-item.sub {
+    font-size: 1.05rem;
+    padding-left: 2.2rem;
+    color: #e0e0e0;
+    background: none;
+    border-radius: 8px;
+  }
+  .burger-item.sub:hover {
+    color: #a3c2f7;
+    background: rgba(255,255,255,0.07);
+  }
+  .burger-news-item {
+    color: #e0e0e0;
+    font-size: 0.98rem;
+    padding: 0.5rem 2.2rem 0.5rem 2.2rem;
+    text-align: left;
+    border-radius: 7px;
+    margin-left: 0.2rem;
+  }
+  .burger-news-item:not(:last-child) {
+    margin-bottom: 0.1rem;
+  }
+}

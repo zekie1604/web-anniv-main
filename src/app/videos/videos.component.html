@@ -1,0 +1,40 @@
+<div class="video-gallery" [ngStyle]="{ 
+  'background-image': 'url(' + getResponsiveBackground() + ')', 
+  'background-size': getBackgroundSize(),
+  'background-position': 'left center',
+  'background-attachment': 'fixed',
+  'background-repeat': 'no-repeat',
+  'min-height': '100vh',
+  'position': 'relative'
+}">
+  <div class="video-grid">
+    <div class="main-card">
+      <div class="video-aspect">
+        <iframe [src]="selectedVideo | safeUrl" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="side-cards">
+      <!-- Mobile slider navigation -->
+      <button *ngIf="isMobile() && canSlideLeft()" class="slider-nav left" (click)="slideLeft()">&#8592;</button>
+      <div class="side-card" *ngFor="let url of getVisibleVideos(); let i = index" (click)="setMainVideo(url)" [class.selected]="selectedVideo.startsWith(url)">
+        <div class="video-aspect" style="cursor:pointer; position:relative;">
+          <img [src]="'https://img.youtube.com/vi/' + url.split('/embed/')[1] + '/hqdefault.jpg'" alt="Video thumbnail">
+          <span class="play-overlay cute">
+            <svg width="54" height="48" viewBox="0 0 54 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M27 44s-15.6-12.36-21.6-19.2C-2.4 17.04 4.8 6 16.8 6c5.28 0 8.88 3.12 10.2 4.8C28.32 9.12 31.92 6 37.2 6c12 0 19.2 11.04 11.4 18.8C42.6 31.64 27 44 27 44z"
+                fill="url(#cuteHeart)" stroke="#fff" stroke-width="2"/>
+              <defs>
+                <linearGradient id="cuteHeart" x1="0" y1="0" x2="54" y2="48" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#ffb6e6"/>
+                  <stop offset="1" stop-color="#ffd6ec"/>
+                </linearGradient>
+              </defs>
+              <polygon points="22,18 38,24 22,30" fill="white" filter="drop-shadow(0 2px 6px rgba(0,0,0,0.2))"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+      <button *ngIf="isMobile() && canSlideRight()" class="slider-nav right" (click)="slideRight()">&#8594;</button>
+    </div>
+  </div>
+</div>

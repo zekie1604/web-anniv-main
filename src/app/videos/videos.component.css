@@ -1,0 +1,199 @@
+.video-gallery {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-size: 150% auto; /* Increased size to allow for zoom effect */
+  background-position: left center; /* Changed to focus on left side */
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 1.2rem;
+  width: 90vw;
+  max-width: 1400px;
+  height: 85vh;
+}
+
+.main-card, .side-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: rgba(255, 105, 180, 0.9);  pink */
+  border-radius: 10px;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.video-aspect {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.video-aspect iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 10px;
+}
+
+.main-card {
+  height: 100%;
+}
+
+.side-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem; /* Minimize gap between side videos */
+  height: 100%;
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+.side-card {
+  flex: 1 1 0;
+  width: 22vw;
+  margin-right: 0.2rem;
+  padding: 0;
+  background: none;
+}
+
+.side-card .video-aspect {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.side-card img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.side-card span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  border-radius: 50%;
+  padding: 0.3em 0.5em;
+  pointer-events: none;
+}
+
+.play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform 0.2s cubic-bezier(.4,2,.6,1), box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25), 0 0 0 4px rgba(255,255,255,0.15);
+  cursor: pointer;
+}
+
+.side-card:hover .play-overlay {
+  transform: translate(-50%, -50%) scale(1.12);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 0 6px rgba(255,255,255,0.25);
+  filter: brightness(1.15) drop-shadow(0 0 8px #fff8);
+}
+
+.play-overlay svg {
+  display: block;
+}
+
+.play-overlay.cute {
+  animation: cute-bounce 1.2s infinite alternate;
+  box-shadow: 0 4px 16px #ffb6e6aa, 0 0 0 4px #fff3;
+  background: none;
+  filter: drop-shadow(0 0 6px #ffd6ec);
+}
+
+@keyframes cute-bounce {
+  0% { transform: translate(-50%, -50%) scale(1);}
+  100% { transform: translate(-50%, -54%) scale(1.08);}
+}
+
+.side-card:hover .play-overlay.cute {
+  filter: brightness(1.2) drop-shadow(0 0 12px #ffb6e6cc);
+  box-shadow: 0 8px 32px #ffb6e6cc, 0 0 0 8px #ffd6ec88;
+  animation: none;
+  transform: translate(-50%, -50%) scale(1.15) rotate(-8deg);
+}
+
+.play-overlay.cute svg {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .video-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 1fr;
+    gap: 1rem;
+    height: auto;
+  }
+  .side-cards {
+    flex-direction: row;
+    gap: 1rem;
+    height: auto;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    min-height: 140px;
+    position: relative;
+  }
+  .side-card {
+    min-width: 32vw;
+    max-width: 33vw;
+    height: 120px;
+    flex: 0 0 auto;
+    margin-right: 0;
+  }
+  .main-card {
+    min-height: 200px;
+  }
+  .slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255,255,255,0.7);
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slider-nav.left {
+    left: 0.2rem;
+  }
+  .slider-nav.right {
+    right: 0.2rem;
+  }
+}

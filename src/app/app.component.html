@@ -1,0 +1,19 @@
+<!-- App Component Template -->
+<div class="flex flex-col min-h-screen">
+  <!-- Header -->
+  <ng-container *ngIf="!isPasscodePage()">
+    <app-header class="sticky top-0 z-50 bg-white shadow-md"></app-header>
+  </ng-container>
+
+  <!-- Main Content -->
+  <main class="flex-1">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <ng-container *ngIf="!isPasscodePage()">
+  <app-footer></app-footer>
+  </ng-container>
+
+  <app-music-control />
+</div>

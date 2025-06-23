@@ -1,0 +1,74 @@
+{
+  "fullname": "Ezekiel Lucas",
+  "preferredNames": ["Zekie", "Kiel", "Ezekiel"],
+  "age": 27,
+  "birthday": "February 16, 1998",
+  "hometown": "Paombong, Bulacan",
+  "physicalAttributes": {
+    "weight": "66 kg",
+    "height": "5'7\""
+  },
+  "education": {
+    "graduated": 2019,
+    "school": "Bulacan State University",
+    "course": "Bachelor of Technical Teacher Education (BTTE)",
+    "major": "Food and Service Management"
+  },
+  "professionalStatus": {
+    "licensedTeacher": true,
+    "examYear": 2019
+  },
+  "lifestyle": {
+    "smokes": false,
+    "drinksAlcohol": false,
+    "avoidsVices": true
+  },
+  "skills": ["Piano Playing", "Cooking"],
+  "hobbies": ["Gaming", "Biking", "Cooking"],
+  "gamingPreferences": {
+    "favoriteGame": "Pokémon Crystal",
+    "favoritePokemon": "Skorupi",
+    "otherGames": [
+      {"name": "Wuthering Waves", "favoriteCharacter": "Changli"},
+      {"name": "Wild Rift", "favoriteCharacter": "Rengar"},
+      {"name": "Teamfight Tactics", "favoriteCharacter": "Disco Twisted Fate"}
+    ]
+  },
+  "foodDrinkPreferences": {
+    "favoriteSnack": "Chocolates or any salty foods",
+    "favoriteChocolate": "Dark chocolate",
+    "favoriteUlam": "Giniling (ground pork dish)",
+    "favoriteDrinks": ["Coffee", "Iced Tea"],
+    "favoriteFastFood": "Mang Inasal",
+    "favoriteFruit": "Apple",
+    "favoriteVegetable": "Cabbage"
+  },
+  "animeInterests": {
+    "favoriteAnimes": ["Re:Zero", "Hunter x Hunter", "One Punch Man", "Dragon Ball"],
+    "favoriteAnimeCharacters": "Every main character from the mentioned animes"
+  },
+  "musicPreferences": {
+    "favoriteGenre": "OPM (Original Pilipino Music)",
+    "favoriteSong": "Patutunguhan",
+    "alsoLikes": ["Anime openings", "Game soundtracks"]
+  },
+  "movieFilmPreferences": {
+    "favoriteMovieSeries": "Harry Potter",
+    "favoriteFilm": "Harry Potter and the Half-Blood Prince",
+    "favoriteCharacter": "Luna Lovegood",
+    "hogwartsHouse": "Ravenclaw"
+  },
+  "personalityType": {
+    "mbti": "INTJ",
+    "description": "The Architect"
+  },
+  "relationshipStatus": {
+    "partner": "Chelle (also known as Rachelle or Joy)",
+    "anniversary": "June 25",
+    "engagementStatus": "Secret / Private",
+    "howStarted": "Chelle made the first move by confessing her feelings via Messenger"
+  },
+  "marriagePlans": {
+    "goal": "To get married before turning 30 years old"
+  }
+} 

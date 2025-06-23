@@ -1,0 +1,88 @@
+{
+  "Fullname": "Rachelle Joy Baluyut",
+  "Preferred Names": ["Chelle", "Joy", "Rachelle"],
+  "Age": 27,
+  "Education": {
+    "Graduated Year": 2019,
+    "School": "Bulacan State University",
+    "Course": "Bachelor of Technical Teacher Education (BTTE)",
+    "Major": "Food and Service Management"
+  },
+  "Professional Status": {
+    "Licensed": true,
+    "License Info": "Passed Licensure Examination for Professional Teachers – 2019"
+  },
+  "Lifestyle": {
+    "Smoking": false,
+    "Drinking": false,
+    "Vices": false
+  },
+  "Skills": [
+    "Dancing",
+    "Singing"
+  ],
+  "Hobbies": [
+    "Reading",
+    "Watching K-dramas or movies",
+    "Cooking"
+  ],
+  "Gaming Preferences": {
+    "Favorite Games": [
+      "Minecraft",
+      "Wild Rift",
+      "Pokémon Unite"
+    ],
+    "Favorite Pokémon": "Bunneary",
+    "Favorite Wild Rift Character": "Yuumi"
+  },
+  "Food & Drink Preferences": {
+    "Favorite Snack": "Bread",
+    "Favorite Chocolate": "Dark chocolate",
+    "Favorite Ulam": "Pork Sisig",
+    "Favorite Drinks": [
+      "Hot tea",
+      "Milk tea"
+    ],
+    "Favorite Fast Food Restaurant": "Jollibee",
+    "Favorite Fruit": "Mango",
+    "Favorite Vegetable": "Turnip"
+  },
+  "Anime Interests": {
+    "Favorite Animes": [
+      "Maid Sama!",
+      "Fushigi Yûgi"
+    ],
+    "Favorite Anime Characters": {
+      "Maid Sama!": "Usui Takumi",
+      "Fushigi Yûgi": "Tasuki / Tamahome"
+    }
+  },
+  "Music Preferences": {
+    "Favorite Genre": "OPM (Original Pilipino Music)",
+    "Examples": [
+      "Uhaw"
+    ]
+  },
+  "Movie & Film Preferences": {
+    "Favorite Movies": [
+      "If Only",
+      "Harry Potter films"
+    ],
+    "Favorite Harry Potter Film": "Harry Potter and the Prisoner of Azkaban",
+    "Favorite Harry Potter Character": "Hermione Granger",
+    "Hogwarts House": "Hufflepuff"
+  },
+  "Personality Type": {
+    "MBTI": "ENFP",
+    "Description": "The Campaigner"
+  },
+  "Relationship Status": {
+    "Partner": "Zekie (Kiel/Ezekiel Lucas)",
+    "Anniversary": "June 25",
+    "Engagement Status": "Secret / Private",
+    "How Relationship Started": "I confessed to him via Messenger. He was too slow to make a move!"
+  },
+  "Marriage Plans": {
+    "Goal": "To get married before turning 30 years old"
+  }
+}
