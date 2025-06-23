@@ -1,7 +1,7 @@
 <div class="cbg" [style.background-image]="'url(' + getResponsiveBackground() + ')'" [style.background-size]="getBackgroundSize()">
   <!-- Jealous Zekie Animation -->
   <div *ngIf="jealousZekieVisible" 
-       class="jealous-zekie-container"
+       class="jzc"
        [ngClass]="{
          'left': jealousZekieIsLeft,
          'right': !jealousZekieIsLeft,
@@ -9,7 +9,7 @@
          'slide-out-right': jealousZekieIsClicked && !jealousZekieIsLeft
        }"
        (click)="onJealousZekieClick()">
-    <img [src]="jealousZekieCurrentImage" class="jealous-zekie-img" alt="Jealous Zekie">
+    <img [src]="jealousZekieCurrentImage" class="jzi" alt="Jealous Zekie">
   </div>
   
   <div class="cmc"
@@ -18,50 +18,50 @@
          'background-size': 'cover',
          'background-position': 'center center'
        } : {}">
-    <button class="help-icon-btn" (click)="toggleHelp()" aria-label="Help">
-      <span class="help-icon">?</span>
+    <button class="hib" (click)="toggleHelp()" aria-label="Help">
+      <span class="hi">?</span>
     </button>
-    <div *ngIf="showHelp" class="help-tooltip" (clickOutside)="closeHelp()">
+    <div *ngIf="showHelp" class="ht" (clickOutside)="closeHelp()">
       Please check the spelling and complete the question for more accurate response 😊
-      <button class="close-help-btn" (click)="closeHelp()" aria-label="Close">×</button>
+      <button class="chb" (click)="closeHelp()" aria-label="Close">×</button>
     </div>
-    <div class="chatbot-avatar-col">
-      <div class="chatbot-avatar-morph-container">
-        <img *ngIf="previousAvatarImage" [src]="previousAvatarImage" class="chatbot-avatar-img morph-out" [class.morphing]="isMorphing">
-        <img [src]="currentAvatarImage" class="chatbot-avatar-img morph-in" [class.morphing]="isMorphing" (load)="onAvatarLoaded()">
+    <div class="cac">
+      <div class="camc">
+        <img *ngIf="previousAvatarImage" [src]="previousAvatarImage" class="cai morph-out" [class.morphing]="isMorphing">
+        <img [src]="currentAvatarImage" class="cai morph-in" [class.morphing]="isMorphing" (load)="onAvatarLoaded()">
       </div>
-      <div class="avatar-select-row">
-        <button type="button" class="avatar-select-btn blue" [class.selected]="selectedAvatar === 'ZEKIE'" (click)="selectAvatar('ZEKIE')">Zekie</button>
-        <button type="button" class="avatar-select-btn pink" [class.selected]="selectedAvatar === 'CHELLE'" (click)="selectAvatar('CHELLE')">Chelle</button>
+      <div class="asr">
+        <button type="button" class="asb blue" [class.selected]="selectedAvatar === 'ZEKIE'" (click)="selectAvatar('ZEKIE')">Zekie</button>
+        <button type="button" class="asb pink" [class.selected]="selectedAvatar === 'CHELLE'" (click)="selectAvatar('CHELLE')">Chelle</button>
       </div>
     </div>
-    <div class="chatbot-chat-col">
-      <div class="chatbot-messages" #messagesContainer>
+    <div class="ccc">
+      <div class="cms" #messagesContainer>
         <!-- Existing Messages -->
-        <div *ngFor="let message of messages" class="chatbot-message-row" [ngClass]="{'user': message.isUser, 'assistant': !message.isUser}">
-          <div class="chatbot-message-bubble" [ngClass]="{'user-bubble': message.isUser, 'assistant-bubble': !message.isUser, 'animated-text': message.animated}">
+        <div *ngFor="let message of messages" class="cmr" [ngClass]="{'user': message.isUser, 'assistant': !message.isUser}">
+          <div class="cmb" [ngClass]="{'ub': message.isUser, 'ab': !message.isUser, 'animated-text': message.animated}">
             {{ message.text }}
           </div>
         </div>
-        <div *ngIf="isLoading" class="chatbot-message-row assistant">
-          <div class="chatbot-message-bubble assistant-bubble">
-            <div class="typing-indicator">
+        <div *ngIf="isLoading" class="cmr assistant">
+          <div class="cmb ab">
+            <div class="ti">
               <span></span><span></span><span></span>
             </div>
           </div>
         </div>
       </div>
-      <form (ngSubmit)="sendMessage()" class="chatbot-input-row">
+      <form (ngSubmit)="sendMessage()" class="cir">
         <input type="text"
                [(ngModel)]="userInput"
                name="userInput"
                [placeholder]="placeholderText"
-               class="chatbot-input"
+               class="ci"
                [disabled]="isLoading"
                autocomplete="off"
                #chatInput
         >
-        <button type="submit" class="chatbot-send-btn" [disabled]="isLoading || !userInput.trim()">Send</button>
+        <button type="submit" class="csb" [disabled]="isLoading || !userInput.trim()">Send</button>
       </form>
     </div>
   </div>
