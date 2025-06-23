@@ -1,5 +1,4 @@
-/* Gray background for the whole page */
-.chatbot-bg {
+.cbg {
   min-height: 100vh;
   background-color: #aaa;
   background-position: left center;
@@ -9,8 +8,7 @@
   justify-content: center;
 }
 
-/* Main chat container layout */
-.chatbot-main-container {
+.cmc {
   display: flex;
   flex-direction: row;
   background: white;
@@ -242,12 +240,12 @@
   margin-top: 24px;
 }
 
-/* Move avatar-select-row to be under the avatar in the avatar column */
+
 .chatbot-avatar-col .avatar-select-row {
   margin-top: 32px;
 }
 
-/* Remove margin-top from .avatar-select-row in chat column */
+
 .chatbot-chat-col .avatar-select-row {
   margin-top: 0;
   display: none;
@@ -412,9 +410,9 @@
 }
 
 @media (max-width: 700px) {
-  /* Removed html, body and body styles for global move */
-  .chatbot-bg,
-  .chatbot-main-container,
+  
+  .cbg,
+  .cmc,
   .chatbot-chat-col,
   .chatbot-messages,
   .chatbot-input-row {
@@ -429,8 +427,8 @@
     margin-right: 0 !important;
     position: relative !important;
   }
-  .chatbot-bg > *,
-  .chatbot-main-container > *,
+  .cbg > *,
+  .cmc > *,
   .chatbot-chat-col > *,
   .chatbot-messages > * {
     max-width: 100vw !important;
@@ -440,14 +438,14 @@
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
-  .chatbot-bg {
+  .cbg {
     align-items: flex-start;
     justify-content: flex-start;
     min-height: 100vh;
     padding: 0;
     background-size: cover !important;
   }
-  .chatbot-main-container {
+  .cmc {
     flex-direction: column;
     width: 100vw;
     min-width: 0;
@@ -587,7 +585,7 @@
 }
 
 @media (max-width: 900px) {
-  .chatbot-main-container {
+  .cmc {
     background: transparent !important;
   }
 }

@@ -1,4 +1,4 @@
-<div class="chatbot-bg" [style.background-image]="'url(' + getResponsiveBackground() + ')'" [style.background-size]="getBackgroundSize()">
+<div class="cbg" [style.background-image]="'url(' + getResponsiveBackground() + ')'" [style.background-size]="getBackgroundSize()">
   <!-- Jealous Zekie Animation -->
   <div *ngIf="jealousZekieVisible" 
        class="jealous-zekie-container"
@@ -12,7 +12,7 @@
     <img [src]="jealousZekieCurrentImage" class="jealous-zekie-img" alt="Jealous Zekie">
   </div>
   
-  <div class="chatbot-main-container"
+  <div class="cmc"
        [ngStyle]="isMobile() ? {
          'background-image': 'url(' + mobileBackgroundImage + ')',
          'background-size': 'cover',
