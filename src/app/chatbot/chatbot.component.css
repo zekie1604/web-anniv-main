@@ -38,17 +38,6 @@
   min-width: 320px;
 }
 
-.chatbot-avatar {
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  background: #a67c62;
-  margin-top: 60px;
-  margin-bottom: 0;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-}
-
 .chatbot-chat-col {
   display: flex;
   flex-direction: column;
