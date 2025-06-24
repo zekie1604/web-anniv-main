@@ -292,6 +292,17 @@ export class ChatService {
 
   async getResponse(userMessage: string, avatar: 'ZEKIE' | 'CHELLE'): Promise<ChatResponse> {
     await this.loadQandaData();
+    
+    const msg = userMessage.trim().toLowerCase();
+    
+    // Special response for "after all this time" - check this first before Q&A system
+    if (msg === 'after all this time' || msg === 'after all this time?' || msg === 'after all this time!' || msg === 'after all this time.') {
+      return {
+        text: 'Always.',
+        image: avatar === 'ZEKIE' ? this.zekieImages.harryPotter : this.chelleImages.harryPotter
+      };
+    }
+    
     const qandaIntent = this.findQandaIntent(userMessage);
     if (qandaIntent) {
       const qandaText = this.getQandaResponse(qandaIntent.intent, avatar);
@@ -308,8 +319,6 @@ export class ChatService {
         };
       }
     }
-    
-    const msg = userMessage.trim().toLowerCase();
     
     // --- Date-aware greetings logic ---
     const today = new Date();
@@ -500,14 +509,6 @@ export class ChatService {
     }
     // ... existing code ...
 
-    // Special response for "after all this time"
-    if (msg === 'after all this time' || msg === 'after all this time?' || msg === 'after all this time!' || msg === 'after all this time.') {
-      return {
-        text: 'Always.',
-        image: avatar === 'ZEKIE' ? this.zekieImages.harryPotter : this.chelleImages.harryPotter
-      };
-    }
-    
     // Handle greetings and 'how are you' for Zekie
     if (avatar === 'ZEKIE') {
       // Check if Zekie is sleeping first
@@ -1202,6 +1203,14 @@ export class ChatService {
   private getZekieImageForQuestion(userMessage: string): string {
     const msg = userMessage.toLowerCase();
     
+    // Use harryPotter avatar for favorite movies questions
+    if (
+      (msg.includes('favorite') && msg.includes('movie')) ||
+      (msg.includes('favorite') && msg.includes('film'))
+    ) {
+      return this.zekieImages.harryPotter;
+    }
+    
     // Wild Rift, Wuthering Waves, TFT specific
     if (msg.includes('wild rift') || msg.includes('wuthering waves') || msg.includes('teamfight tactics') || msg.includes('tft')) {
       return this.zekieImages.games;
@@ -1275,6 +1284,24 @@ export class ChatService {
   private getChelleImageForQuestion(userMessage: string): string {
     const msg = userMessage.toLowerCase();
     
+    // Use firstMove avatar for questions about who confessed, who started, or who made the first move
+    if (
+      msg.includes('confess') ||
+      msg.includes('first move') ||
+      msg.includes('who started') ||
+      msg.includes('who made the first move')
+    ) {
+      return this.chelleImages.firstMove;
+    }
+
+    // Use harryPotter avatar for favorite movies questions
+    if (
+      (msg.includes('favorite') && msg.includes('movie')) ||
+      (msg.includes('favorite') && msg.includes('film'))
+    ) {
+      return this.chelleImages.harryPotter;
+    }
+    
     // Wild Rift specific
     if (msg.includes('wild rift')) {
       return this.chelleImages.games;
@@ -1297,9 +1324,6 @@ export class ChatService {
     
     // Relationship related
     if (msg.includes('zekie') || msg.includes('partner') || msg.includes('relationship') || msg.includes('anniversary') || msg.includes('marriage') || msg.includes('propose') || msg.includes('confess') || msg.includes('meet') || msg.includes('boyfriend') || msg.includes('significant other')) {
-      if (msg.includes('confess') || msg.includes('first move') || msg.includes('who started') || msg.includes('who made the first move')) {
-        return this.chelleImages.firstMove;
-      }
       return this.chelleImages.relationship;
     }
     
