@@ -34,6 +34,7 @@ nav .nav-link, .nav-main .nav-link {
   img[src*='logo.png'] {
     max-height: 38px;
     width: auto;
+    margin-top: 6px;
   }
 }
 
@@ -58,6 +59,7 @@ nav .nav-link, .nav-main .nav-link {
   img[src*='logo.png'] {
     max-height: 28px;
     width: auto;
+    margin-top: 10px;
   }
 }
 

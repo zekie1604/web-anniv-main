@@ -64,7 +64,7 @@ interface MemoryCard {
               </div>
             </div>
           </div>
-          <div *ngIf="!aiOpponent" class="mt-2 text-center text-red-600 font-semibold">Please choose your opponent to start the game.</div>
+          <div *ngIf="!aiOpponent" class="mt-2 text-center text-red-600 font-semibold choose-opponent-message">Please choose your opponent to start the game.</div>
           <div *ngIf="aiOpponent && !canPlay() && !gameWon && aiScore < 5 && userScore < 5" class="mt-4 text-center text-yellow-600 font-semibold">You can't change opponent during an ongoing game.</div>
           <div *ngIf="gameWon" class="mt-1 text-center text-green-700 font-semibold text-lg">
             <ng-container *ngIf="userScore === 4 && aiScore === 4; else notDraw">Draw!!! You matched all pairs!</ng-container>
@@ -344,6 +344,9 @@ interface MemoryCard {
       .opponent-container-mobile label {
         padding: 0.7rem 1.2rem !important;
         font-size: 1.1rem !important;
+      }
+      .choose-opponent-message {
+        font-size: 0.85rem !important;
       }
     }
     `
