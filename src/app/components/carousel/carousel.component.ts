@@ -16,7 +16,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private readonly yearService = inject(YearService);
 
   // Array of image paths
-  images = [
+  public images = [
     'assets/2024.png',
     'assets/2023.png',
     'assets/2022.png',
@@ -44,8 +44,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private resumeTimeout: any = null;
   private readonly AUTOPLAY_DELAY = 5000; // 5 seconds
   private readonly RESUME_DELAY = 5000; // 5 seconds
-  noTransition = false;
+  noTransition = true; // Start with no transition
   backgroundImage = '';
+  private transitionsEnabled = false; // Flag to track if transitions should be enabled
 
   ngOnInit(): void {
     // Restore carousel index based on the last selected year
@@ -56,14 +57,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
       idx = 0;
       this.yearService.setYear(this.getCurrentYear());
     }
-      this.currentIndex = idx;
+    // Set index without transition to avoid sliding animation
+    this.currentIndex = idx;
     this.setBackgroundImage();
-    // If authenticated, ensure year is set and delay autoplay for smoother UX
-    if (sessionStorage.getItem('isAuthenticated') === 'true') {
-      this.currentIndex = 0;
-      this.yearService.setYear(this.getCurrentYear());
-      setTimeout(() => this.startAutoplay(), 500);
-    }
+    
+    // Enable transitions after a short delay to prevent initial sliding
+    setTimeout(() => {
+      this.noTransition = false;
+      this.transitionsEnabled = true;
+    }, 300);
+    
+    // Start autoplay for smoother UX
+    setTimeout(() => this.startAutoplay(), 500);
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     window.addEventListener('resize', this.setBackgroundImage);
   }
@@ -124,6 +129,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Move to the previous image
   prevImage(user = true): void {
+    if (!this.transitionsEnabled) {
+      // If transitions not enabled, just update without animation
+      if (this.currentIndex === 0) {
+        this.currentIndex = this.images.length - 1;
+      } else {
+        this.currentIndex = this.currentIndex - 1;
+      }
+      this.yearService.setYear(this.getCurrentYear());
+      if (user) this.pauseAndResumeAutoplay();
+      return;
+    }
+
     if (this.currentIndex === 0) {
       this.noTransition = false;
       this.currentIndex = this.images.length;
@@ -147,6 +164,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Move to the next image
   nextImage(user = true): void {
+    if (!this.transitionsEnabled) {
+      // If transitions not enabled, just update without animation
+      if (this.currentIndex === this.images.length - 1) {
+        this.currentIndex = 0;
+      } else {
+        this.currentIndex = this.currentIndex + 1;
+      }
+      this.yearService.setYear(this.getCurrentYear());
+      if (user) this.pauseAndResumeAutoplay();
+      return;
+    }
+
     if (this.currentIndex === this.images.length - 1) {
       this.noTransition = false;
       this.currentIndex++;
@@ -170,6 +199,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Go to a specific image
   goToImage(index: number): void {
+    if (!this.transitionsEnabled) {
+      // If transitions not enabled, just update without animation
+      this.currentIndex = index;
+      this.yearService.setYear(this.getCurrentYear());
+      this.pauseAndResumeAutoplay();
+      return;
+    }
+
     this.currentIndex = index;
     this.yearService.setYear(this.getCurrentYear());
     this.pauseAndResumeAutoplay();

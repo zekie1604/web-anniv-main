@@ -31,8 +31,8 @@ import { MusicService } from '../services/music.service';
       cursor: grab;
       background: rgba(30,30,30,0.3);
       color: #fff;
-      border-radius: 24px;
-      padding: 10px 22px 10px 18px;
+      border-radius: 50px;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       gap: 16px;
@@ -40,6 +40,9 @@ import { MusicService } from '../services/music.service';
       font-size: 1.1rem;
       backdrop-filter: blur(4px);
       transition: background 0.2s, box-shadow 0.2s;
+      min-width: 60px;
+      min-height: 60px;
+      justify-content: center;
     }
     .music-stopper-draggable:active {
       cursor: grabbing;
@@ -68,9 +71,14 @@ import { MusicService } from '../services/music.service';
       color: #fff;
       font-size: 1.5rem;
       cursor: pointer;
-      padding: 4px 10px;
+      padding: 8px;
       border-radius: 50%;
       transition: background 0.2s;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .stop-btn:hover {
       background: rgba(255,255,255,0.12);
@@ -78,10 +86,10 @@ import { MusicService } from '../services/music.service';
     .center-stop-btn {
       justify-content: center !important;
       align-items: center !important;
-      padding-left: 0 !important;
-      padding-right: 0 !important;
+      padding: 12px !important;
       gap: 0 !important;
-      min-width: 0 !important;
+      min-width: 60px !important;
+      min-height: 60px !important;
     }
   `]
 })

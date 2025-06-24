@@ -50,6 +50,13 @@ import { inject } from '@angular/core';
     this.router.navigate(['/timeline', currentYear]);
   }
 
+  navigateToHome() {
+    const currentYear = this.yearService.getYear()();
+    this.showMobileMenu = false;
+    this.router.navigate(['/home']);
+    this.yearService.setYear(currentYear);
+  }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
