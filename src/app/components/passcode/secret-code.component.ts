@@ -12,7 +12,7 @@ import { MusicService } from '../../services/music.service';
   styleUrl: './secret-code.component.scss'
 })
 export class SecretCodeComponent implements OnInit {
-  private readonly correctCode = '0625';
+  private readonly correctCode = '1826';
   readonly inputCode = signal('');
   readonly error = signal('');
 
