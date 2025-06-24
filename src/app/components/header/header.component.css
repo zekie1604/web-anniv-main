@@ -31,6 +31,10 @@ nav .nav-link, .nav-main .nav-link {
   .md\:hidden {
     display: block !important;
   }
+  img[src*='logo.png'] {
+    max-height: 38px;
+    width: auto;
+  }
 }
 
 @media (max-width: 640px) {
@@ -50,6 +54,10 @@ nav .nav-link, .nav-main .nav-link {
   nav .nav-link, .nav-main .nav-link {
     padding: 0.1rem 0.3rem;
     min-width: unset;
+  }
+  img[src*='logo.png'] {
+    max-height: 28px;
+    width: auto;
   }
 }
 

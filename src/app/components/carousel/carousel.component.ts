@@ -50,14 +50,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Restore carousel index based on the last selected year
     const lastYear = this.yearService.getYear()();
-    const idx = this.images.findIndex(img => img.includes(lastYear));
-    if (idx !== -1) {
-      this.currentIndex = idx;
+    let idx = this.images.findIndex(img => img.includes(lastYear));
+    if (idx === -1) {
+      // Default to the latest year (first image)
+      idx = 0;
+      this.yearService.setYear(this.getCurrentYear());
     }
+      this.currentIndex = idx;
     this.setBackgroundImage();
-    this.yearService.setYear(this.getCurrentYear());
+    // If authenticated, ensure year is set and delay autoplay for smoother UX
     if (sessionStorage.getItem('isAuthenticated') === 'true') {
-      this.startAutoplay();
+      this.currentIndex = 0;
+      this.yearService.setYear(this.getCurrentYear());
+      setTimeout(() => this.startAutoplay(), 500);
     }
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     window.addEventListener('resize', this.setBackgroundImage);
