@@ -56,7 +56,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
     this.setBackgroundImage();
     this.yearService.setYear(this.getCurrentYear());
-    this.startAutoplay();
+    if (sessionStorage.getItem('isAuthenticated') === 'true') {
+      this.startAutoplay();
+    }
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     window.addEventListener('resize', this.setBackgroundImage);
   }
