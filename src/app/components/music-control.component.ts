@@ -19,7 +19,7 @@ import { MusicService } from '../services/music.service';
       style="position: fixed; z-index: 1001; cursor: grab;"
     >
       <span class="song-name" [class.hide-song-name]="!showSongName">{{ musicService.getCurrentSongName() }}</span>
-      <button class="stop-btn" (click)="musicService.pause()" title="Stop music">
+      <button class="stop-btn" (click)="onStopClick($event)" (touchend)="onStopClick($event)" title="Stop music">
         &#10073;&#10073;
       </button>
     </div>
@@ -107,12 +107,15 @@ export class MusicControlComponent {
 
   ngOnInit() {
     this.resetSongNameTimer();
+    this.ensureInViewport();
+    window.addEventListener('resize', this.ensureInViewport.bind(this));
   }
 
   ngOnDestroy() {
     if (this.hideTimeout) {
       clearTimeout(this.hideTimeout);
     }
+    window.removeEventListener('resize', this.ensureInViewport.bind(this));
   }
 
   resetSongNameTimer() {
@@ -145,6 +148,7 @@ export class MusicControlComponent {
     const clientY = (event instanceof MouseEvent) ? event.clientY : event.touches[0].clientY;
     this.stopperX = clientX - this.offsetX;
     this.stopperY = clientY - this.offsetY;
+    this.ensureInViewport();
   }
 
   @HostListener('window:mouseup')
@@ -168,5 +172,24 @@ export class MusicControlComponent {
   onMouseLeave() {
     this.hovering = false;
     this.resetSongNameTimer();
+  }
+
+  onStopClick(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.musicService.pause();
+  }
+
+  ensureInViewport() {
+    // Get stopper element size (estimate if not rendered yet)
+    const stopperWidth = 220; // estimated width
+    const stopperHeight = 48; // estimated height
+    const padding = 8;
+    const maxX = window.innerWidth - stopperWidth - padding;
+    const maxY = window.innerHeight - stopperHeight - padding;
+    if (this.stopperX > maxX) this.stopperX = maxX;
+    if (this.stopperY > maxY) this.stopperY = maxY;
+    if (this.stopperX < padding) this.stopperX = padding;
+    if (this.stopperY < padding) this.stopperY = padding;
   }
 } 

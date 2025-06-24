@@ -258,7 +258,8 @@ interface MemoryCard {
         max-width: 100vw;
         align-items: stretch;
         justify-content: flex-start;
-        padding: 0 0.2rem;
+        padding: 0 0.2rem 320px 0.2rem !important;
+        margin-top: 6rem !important;
       }
       .memory-game-containers > div {
         width: 100% !important;
@@ -280,16 +281,16 @@ interface MemoryCard {
         font-size: 1rem !important;
       }
       .w-64, .h-64 {
-        width: 4.5rem !important;
-        height: 4.5rem !important;
+        width: 7.5rem !important;
+        height: 7.5rem !important;
       }
       .w-16, .h-16 {
-        width: 2.5rem !important;
-        height: 2.5rem !important;
+        width: 4rem !important;
+        height: 4rem !important;
       }
       .before-img {
-        width: 8rem !important;
-        height: 8rem !important;
+        width: 12rem !important;
+        height: 12rem !important;
       }
       .grid.grid-cols-4 {
         gap: 0.3rem !important;
@@ -329,6 +330,20 @@ interface MemoryCard {
       .opponent-container-mobile {
         margin-top: 3.5rem !important;
         min-height: 320px !important;
+      }
+      .opponent-container-mobile h2,
+      .opponent-container-mobile .font-bold,
+      .opponent-container-mobile .font-semibold,
+      .opponent-container-mobile .text-xl,
+      .opponent-container-mobile .text-lg {
+        font-size: 1.5rem !important;
+      }
+      .opponent-container-mobile .text-4xl {
+        font-size: 2rem !important;
+      }
+      .opponent-container-mobile label {
+        padding: 0.7rem 1.2rem !important;
+        font-size: 1.1rem !important;
       }
     }
     `

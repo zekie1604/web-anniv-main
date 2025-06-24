@@ -68,18 +68,44 @@
 >
   <!-- Close Button -->
   <button
-    class="absolute top-4 right-4 text-white text-2xl font-bold"
+    class="absolute top-4 right-4 text-white text-2xl font-bold z-60 bg-black bg-opacity-60 rounded-full p-2 hover:bg-opacity-80 focus:outline-none"
     (click)="closeFullImage()"
+    tabindex="0"
+    aria-label="Close"
+    style="z-index: 60;"
   >
     &times;
+  </button>
+
+  <!-- Left Navigation Button -->
+  <button
+    class="absolute left-0 text-white text-3xl font-bold z-60 bg-black bg-opacity-60 rounded-r-full p-2 px-4 hover:bg-opacity-80 focus:outline-none"
+    (click)="navigateImages(-1)"
+    tabindex="0"
+    aria-label="Previous image"
+    style="top: 50%; transform: translateY(-50%); z-index: 60;"
+  >
+    &#8592;
   </button>
 
   <!-- Full-Screen Image -->
   <img
     [src]="fullImageSrc"
     alt="Full Size Image"
-    class="max-w-full max-h-full object-contain"
+    class="max-w-full max-h-full object-contain select-none"
+    style="pointer-events: auto;"
   />
+
+  <!-- Right Navigation Button -->
+  <button
+    class="absolute right-0 text-white text-3xl font-bold z-60 bg-black bg-opacity-60 rounded-l-full p-2 px-4 hover:bg-opacity-80 focus:outline-none"
+    (click)="navigateImages(1)"
+    tabindex="0"
+    aria-label="Next image"
+    style="top: 50%; transform: translateY(-50%); z-index: 60;"
+  >
+    &#8594;
+  </button>
 
   <!-- Tooltip for Keyboard Shortcuts -->
   <div class="tooltip">

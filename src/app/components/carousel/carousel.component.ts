@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgStyle } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MusicService } from '../../services/music.service';
@@ -7,7 +7,7 @@ import { YearService } from '../../services/year.service';
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [NgFor, RouterModule],
+  imports: [NgFor, NgStyle, RouterModule],
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css']
 })
@@ -45,6 +45,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private readonly AUTOPLAY_DELAY = 5000; // 5 seconds
   private readonly RESUME_DELAY = 5000; // 5 seconds
   noTransition = false;
+  backgroundImage = '';
 
   ngOnInit(): void {
     // Restore carousel index based on the last selected year
@@ -53,15 +54,18 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (idx !== -1) {
       this.currentIndex = idx;
     }
+    this.setBackgroundImage();
     this.yearService.setYear(this.getCurrentYear());
     this.startAutoplay();
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    window.addEventListener('resize', this.setBackgroundImage);
   }
 
   ngOnDestroy(): void {
     this.clearAutoplay();
     this.clearResumeTimeout();
     document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+    window.removeEventListener('resize', this.setBackgroundImage);
   }
 
   private handleVisibilityChange = () => {
@@ -104,7 +108,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Extract the year from the current image filename
   getCurrentYear(): string {
-    return this.images[this.currentIndex].split('/').pop()?.split('.')[0] || '';
+    const img = this.images[this.currentIndex];
+    if (!img) {
+      return '2024'; // fallback year
+    }
+    return img.split('/').pop()?.split('.')[0] || '2024';
   }
 
   // Move to the previous image
@@ -174,6 +182,15 @@ export class CarouselComponent implements OnInit, OnDestroy {
       if (target) {
         this.musicService.setCurrentSong(target.selectedIndex);
       }
+    }
+  }
+
+  setBackgroundImage = () => {
+    const year = this.getCurrentYear();
+    if (window.innerWidth <= 900) {
+      this.backgroundImage = `assets/carousels/${year}.jpg`;
+    } else {
+      this.backgroundImage = '';
     }
   }
 }

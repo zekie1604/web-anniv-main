@@ -2,6 +2,7 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { YearService } from '../../services/year.service';
+import { inject } from '@angular/core';
 
   @Component({
     selector: 'app-header',
@@ -17,9 +18,10 @@ import { YearService } from '../../services/year.service';
 
   @ViewChild('headerRef', { static: true }) headerRef!: ElementRef;
 
+  public yearService = inject(YearService);
+
   constructor(
-    private router: Router,
-    private yearService: YearService
+    private router: Router
   ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

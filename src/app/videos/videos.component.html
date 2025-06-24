@@ -14,9 +14,8 @@
       </div>
     </div>
     <div class="side-cards">
-      <!-- Mobile slider navigation -->
-      <button *ngIf="isMobile() && canSlideLeft()" class="slider-nav left" (click)="slideLeft()">&#8592;</button>
-      <div class="side-card" *ngFor="let url of getVisibleVideos(); let i = index" (click)="setMainVideo(url)" [class.selected]="selectedVideo.startsWith(url)">
+      <!-- Mobile slider navigation removed; horizontal scroll will be used instead -->
+      <div class="side-card" *ngFor="let url of isMobile() ? videoUrls : getVisibleVideos(); let i = index" (click)="setMainVideo(url)" [class.selected]="selectedVideo.startsWith(url)">
         <div class="video-aspect" style="cursor:pointer; position:relative;">
           <img [src]="'https://img.youtube.com/vi/' + url.split('/embed/')[1] + '/hqdefault.jpg'" alt="Video thumbnail">
           <span class="play-overlay cute">
@@ -34,7 +33,6 @@
           </span>
         </div>
       </div>
-      <button *ngIf="isMobile() && canSlideRight()" class="slider-nav right" (click)="slideRight()">&#8594;</button>
     </div>
   </div>
 </div>

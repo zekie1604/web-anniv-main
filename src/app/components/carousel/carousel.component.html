@@ -1,9 +1,5 @@
-<div class="relative w-full h-screen overflow-hidden rounded-lg shadow-xl">
-  <!-- Header -->
-  <h1 class="absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-4xl sm:text-5xl font-extrabold z-50 labidabs-hero hidden sm:block">
-    Labidabs
-  </h1>
-
+<div class="relative w-full min-h-[400px] md:min-h-[600px] lg:min-h-[700px] overflow-hidden rounded-lg shadow-xl"
+     [ngStyle]="backgroundImage ? { 'background-image': 'url(' + backgroundImage + ')', 'background-size': 'cover', 'background-position': 'center' } : {}">
   <!-- Image Container -->
   <div class="flex transition-transform duration-500 ease-in-out" [class.no-transition]="noTransition" [style.transform]="getTransform()">
     <img *ngFor="let image of images; let i = index"
@@ -23,40 +19,6 @@
         <p class="hidden lg:block mt-2 text-white text-lg sm:text-2xl font-medium leading-relaxed tracking-wide italic hover:text-gray-300 transition-colors">
           {{ texts[currentIndex] }}
         </p>
-      </div>
-      <!-- Vertical Logos for Small/Medium Screens -->
-      <div class="fixed z-50 flex-col items-end gap-4 bottom-4 right-1 lg:hidden flex">
-        <!-- Logo 1: Photos -->
-        <div class="group relative cursor-pointer" [routerLink]="['/photos', getCurrentYear()]" [state]="{ backgroundImage: images[currentIndex] }">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#FFFFFF" class="w-14 h-14 sm:w-16 sm:h-16 hover:scale-110 transition-transform">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M8.813 11.612c.457 -.38 .918 -.38 1.386 .011l.108 .098l4.986 4.986l.094 .083a1 1 0 0 0 1.403 -1.403l-.083 -.094l-1.292 -1.293l.292 -.293l.106 -.095c.457 -.38 .918 -.38 1.386 .011l.108 .098l4.674 4.675a4 4 0 0 1 -3.775 3.599l-.206 .005h-12a4 4 0 0 1 -3.98 -3.603l6.687 -6.69l.106 -.095zm9.187 -9.612a4 4 0 0 1 3.995 3.8l.005 .2v9.585l-3.293 -3.292l-.15 -.137c-1.256 -1.095 -2.85 -1.097 -4.096 -.017l-.154 .14l-.307 .306l-2.293 -2.292l-.15 -.137c-1.256 -1.095 -2.85 -1.097 -4.096 -.017l-.154 .14l-5.307 5.306v-9.585a4 4 0 0 1 3.8 -3.995l.2 -.005h12zm-2.99 5l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007z" />
-          </svg>
-          <span class="absolute top-1/2 left-full ml-2 -translate-y-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-            Photos
-          </span>
-        </div>
-        <!-- Logo 2: Videos -->
-        <div class="group relative cursor-pointer" [routerLink]="['/videos', getCurrentYear()]">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" class="w-14 h-14 sm:w-16 sm:h-16 hover:scale-110 transition-transform">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M20.117 7.625a1 1 0 0 0 -.564 .1l-4.553 2.275v4l4.553 2.275a1 1 0 0 0 1.447 -.892v-6.766a1 1 0 0 0 -.883 -.992z" />
-            <path d="M5 5c-1.645 0 -3 1.355 -3 3v8c0 1.645 1.355 3 3 3h8c1.645 0 3 -1.355 3 -3v-8c0 -1.645 -1.355 -3 -3 -3z" />
-          </svg>
-          <span class="absolute top-1/2 left-full ml-2 -translate-y-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-            Videos
-          </span>
-        </div>
-        <!-- Logo 3: Chatbot -->
-        <div class="group relative cursor-pointer" [routerLink]="['/chatbot', getCurrentYear()]">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#FFFFFF" class="w-14 h-14 sm:w-16 sm:h-16 hover:scale-110 transition-transform">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M5.821 4.91c3.899 -2.765 9.468 -2.539 13.073 .535c3.667 3.129 4.168 8.238 1.152 11.898c-2.841 3.447 -7.965 4.583 -12.231 2.805l-.233 -.101l-4.374 .931l-.04 .006l-.035 .007h-.018l-.022 .005h-.038l-.033 .004l-.021 -.001l-.023 .001l-.033 -.003h-.035l-.022 -.004l-.022 -.002l-.035 -.007l-.034 -.005l-.016 -.004l-.024 -.005l-.049 -.016l-.024 -.005l-.011 -.005l-.022 -.007l-.045 -.02l-.03 -.012l-.011 -.006l-.014 -.006l-.031 -.018l-.045 -.024l-.016 -.011l-.037 -.026l-.04 -.027l-.002 -.004l-.013 -.009l-.043 -.04l-.025 -.02l-.006 -.007l-.056 -.062l-.013 -.014l-.011 -.014l-.039 -.056l-.014 -.019l-.005 -.01l-.042 -.073l-.007 -.012l-.004 -.008l-.007 -.012l-.014 -.038l-.02 -.042l-.004 -.016l-.004 -.01l-.017 -.061l-.007 -.018l-.002 -.015l-.005 -.019l-.005 -.033l-.008 -.042l-.002 -.031l-.003 -.01v-.016l-.004 -.054l.001 -.036l.001 -.023l.002 -.053l.004 -.025v-.019l.008 -.035l.005 -.034l.005 -.02l.004 -.02l.018 -.06l.003 -.013l1.15 -3.45l-.022 -.037c-2.21 -3.747 -1.209 -8.391 2.413 -11.119z" />
-          </svg>
-          <span class="absolute top-1/2 left-full ml-2 -translate-y-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-            Chatbot
-          </span>
-        </div>
       </div>
       <!-- Music Player -->
       <div class="mt-6 flex flex-col items-center">

@@ -49,7 +49,11 @@ export class TimelineComponent {
     effect(() => {
       const year = this.yearService.getYear()();
       this.currentYear = year;
+      if (window.innerWidth <= 900) {
+        this.backgroundImage = `assets/backgrounds/${year}.jpg`;
+      } else {
       this.backgroundImage = `assets/${year}.png`;
+      }
     });
   }
 
