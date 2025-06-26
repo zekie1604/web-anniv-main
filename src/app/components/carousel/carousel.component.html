@@ -1,7 +1,7 @@
 <div class="relative w-full h-[80vh] md:h-screen overflow-hidden rounded-lg shadow-xl"
      [ngStyle]="backgroundImage ? { 'background-image': 'url(' + backgroundImage + ')', 'background-size': 'cover', 'background-position': 'center', 'background-repeat': 'no-repeat' } : {}">
-  <!-- Image Container -->
-  <div class="flex transition-transform duration-500 ease-in-out" [class.no-transition]="noTransition" [style.transform]="getTransform()">
+  <!-- Minimal Carousel Debug Example -->
+  <div class="carousel-track" [class.transition-enabled]="transitionEnabled" [class.no-transition]="!transitionEnabled" [style.transform]="getTransform()">
     <img *ngFor="let image of images; let i = index"
       [src]="image"
       alt="Carousel Image"
@@ -9,6 +9,7 @@
     <!-- Clone of the first image for infinite loop -->
     <img [src]="images[0]" alt="Carousel Image" class="w-full h-full object-cover rounded-lg min-h-[300px]">
   </div>
+  <button (click)="currentIndex = (currentIndex + 1) % images.length">Next</button>
 
   <!-- Bottom Centered Controls for Small/Medium Screens -->
   <div class="block lg:hidden absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md px-2 pb-4 z-50">

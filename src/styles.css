@@ -25,3 +25,8 @@ html, body, #root, app-root {
 body {
   background: none !important;
 }
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1) !important;
+}

@@ -1,6 +1,6 @@
 import { NgFor, NgStyle } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit, effect } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { MusicService } from '../../services/music.service';
 import { YearService } from '../../services/year.service';
 
@@ -14,6 +14,8 @@ import { YearService } from '../../services/year.service';
 export class CarouselComponent implements OnInit, OnDestroy {
   protected readonly musicService = inject(MusicService);
   private readonly yearService = inject(YearService);
+  private readonly router = inject(Router);
+  private routerSubscription: any;
 
   // Array of image paths
   public images = [
@@ -47,38 +49,72 @@ export class CarouselComponent implements OnInit, OnDestroy {
   noTransition = true; // Start with no transition
   backgroundImage = '';
   private transitionsEnabled = false; // Flag to track if transitions should be enabled
+  private firstRender = true; // Prevent transition on first render
+  public transitionEnabled = false;
+
+  constructor() {
+    effect(() => {
+      const currentYear = this.yearService.getYear();
+      const idx = this.images.findIndex(img => img.includes(currentYear()));
+      if (idx !== -1 && idx !== this.currentIndex) {
+        this.noTransition = true;
+        this.currentIndex = idx;
+        this.transitionEnabled = false;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            this.transitionEnabled = true;
+            this.noTransition = false;
+          });
+        });
+      }
+      this.setBackgroundImage();
+    });
+  }
+
+  private forceReflow(callback: () => void) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(callback);
+    });
+  }
 
   ngOnInit(): void {
     // Restore carousel index based on the last selected year
     const lastYear = this.yearService.getYear()();
     let idx = this.images.findIndex(img => img.includes(lastYear));
     if (idx === -1) {
-      // Default to the latest year (first image)
       idx = 0;
       this.yearService.setYear(this.getCurrentYear());
     }
-    // Set index without transition to avoid sliding animation
+    this.transitionEnabled = false;
+    this.noTransition = true;
     this.currentIndex = idx;
     this.setBackgroundImage();
-    
-    // Preload background images for mobile
     this.preloadBackgroundImages();
     
-    // Subscribe to year changes to update background image
-    effect(() => {
-      const currentYear = this.yearService.getYear();
-      console.log(`Year changed to: ${currentYear()}`);
-      this.setBackgroundImage();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.transitionEnabled = true;
+        this.noTransition = false;
+        this.transitionsEnabled = true;
+        this.firstRender = false;
+      });
     });
-    
-    // Enable transitions after a short delay to prevent initial sliding
-    setTimeout(() => {
-      this.noTransition = false;
-      this.transitionsEnabled = true;
-    }, 300);
-    
-    // Start autoplay for smoother UX
-    setTimeout(() => this.startAutoplay(), 500);
+
+    // Check for passcode login flag to start autoplay after login
+    if (sessionStorage.getItem('startCarouselAutoplay') === 'true') {
+      this.startAutoplay(this.RESUME_DELAY);
+      sessionStorage.removeItem('startCarouselAutoplay');
+    }
+    console.log('Carousel ngOnInit called');
+    this.startAutoplay(this.RESUME_DELAY); // Always start autoplay after 5s
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        if (this.router.url === '/home') {
+          console.log('NavigationEnd to /home, forcing autoplay');
+          this.startAutoplay(this.RESUME_DELAY);
+        }
+      }
+    });
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     window.addEventListener('resize', this.setBackgroundImage);
   }
@@ -86,6 +122,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.clearAutoplay();
     this.clearResumeTimeout();
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
     document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     window.removeEventListener('resize', this.setBackgroundImage);
   }
@@ -95,15 +134,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.clearAutoplay();
       this.clearResumeTimeout();
     } else if (document.visibilityState === 'visible') {
-      this.startAutoplay();
+      this.startAutoplay(this.RESUME_DELAY);
     }
   };
 
-  private startAutoplay(): void {
+  private startAutoplay(delay = 0): void {
     this.clearAutoplay();
-    this.autoplayInterval = setInterval(() => {
-      this.nextImage(false);
-    }, this.AUTOPLAY_DELAY);
+    this.clearResumeTimeout();
+    this.resumeTimeout = setTimeout(() => {
+      this.nextImage(false); // Immediately advance after delay
+      this.autoplayInterval = setInterval(() => {
+        this.nextImage(false);
+      }, this.AUTOPLAY_DELAY);
+    }, delay);
   }
 
   private clearAutoplay(): void {
@@ -123,9 +166,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private pauseAndResumeAutoplay(): void {
     this.clearAutoplay();
     this.clearResumeTimeout();
-    this.resumeTimeout = setTimeout(() => {
-      this.startAutoplay();
-    }, this.RESUME_DELAY);
+    this.startAutoplay(this.RESUME_DELAY);
   }
 
   // Extract the year from the current image filename
@@ -139,94 +180,57 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Move to the previous image
   prevImage(user = true): void {
-    if (!this.transitionsEnabled) {
-      // If transitions not enabled, just update without animation
-      if (this.currentIndex === 0) {
-        this.currentIndex = this.images.length - 1;
-      } else {
-        this.currentIndex = this.currentIndex - 1;
-      }
-      this.yearService.setYear(this.getCurrentYear());
-      this.setBackgroundImage(); // Update background image
-      if (user) this.pauseAndResumeAutoplay();
-      return;
-    }
-
     if (this.currentIndex === 0) {
-      this.noTransition = false;
-      this.currentIndex = this.images.length;
+      // Instantly jump to last image, no transition
+      this.transitionEnabled = false;
+      this.noTransition = true;
+      this.currentIndex = this.images.length - 1;
+      this.yearService.setYear(this.getCurrentYear());
+      this.setBackgroundImage();
       setTimeout(() => {
-        this.noTransition = true;
-        // Use requestAnimationFrame to ensure the DOM updates before resetting
-        requestAnimationFrame(() => {
-          this.currentIndex = this.images.length - 1;
-          this.yearService.setYear(this.getCurrentYear());
-          this.setBackgroundImage(); // Update background image
-          setTimeout(() => {
-            this.noTransition = false;
-          }, 500); // match transition duration
-        });
+        this.transitionEnabled = true;
+        this.noTransition = false;
       }, 20);
     } else {
+      this.transitionEnabled = true;
+      this.noTransition = false;
       this.currentIndex = this.currentIndex - 1;
       this.yearService.setYear(this.getCurrentYear());
-      this.setBackgroundImage(); // Update background image
+      this.setBackgroundImage();
     }
     if (user) this.pauseAndResumeAutoplay();
   }
 
   // Move to the next image
   nextImage(user = true): void {
-    if (!this.transitionsEnabled) {
-      // If transitions not enabled, just update without animation
-      if (this.currentIndex === this.images.length - 1) {
-        this.currentIndex = 0;
-      } else {
-        this.currentIndex = this.currentIndex + 1;
-      }
-      this.yearService.setYear(this.getCurrentYear());
-      this.setBackgroundImage(); // Update background image
-      if (user) this.pauseAndResumeAutoplay();
-      return;
-    }
-
     if (this.currentIndex === this.images.length - 1) {
-      this.noTransition = false;
-      this.currentIndex++;
+      // Instantly jump to first image, no transition
+      this.transitionEnabled = false;
+      this.noTransition = true;
+      this.currentIndex = 0;
+      this.yearService.setYear(this.getCurrentYear());
+      this.setBackgroundImage();
       setTimeout(() => {
-        this.noTransition = true;
-        // Use requestAnimationFrame to ensure the DOM updates before resetting
-        requestAnimationFrame(() => {
-          this.currentIndex = 0;
-          this.yearService.setYear(this.getCurrentYear());
-          this.setBackgroundImage(); // Update background image
-          setTimeout(() => {
-            this.noTransition = false;
-          }, 500); // match transition duration
-        });
-      }, 500); // match transition duration
+        this.transitionEnabled = true;
+        this.noTransition = false;
+      }, 20);
     } else {
+      this.transitionEnabled = true;
+      this.noTransition = false;
       this.currentIndex = this.currentIndex + 1;
       this.yearService.setYear(this.getCurrentYear());
-      this.setBackgroundImage(); // Update background image
+      this.setBackgroundImage();
     }
     if (user) this.pauseAndResumeAutoplay();
   }
 
   // Go to a specific image
   goToImage(index: number): void {
-    if (!this.transitionsEnabled) {
-      // If transitions not enabled, just update without animation
-      this.currentIndex = index;
-      this.yearService.setYear(this.getCurrentYear());
-      this.setBackgroundImage(); // Update background image
-      this.pauseAndResumeAutoplay();
-      return;
-    }
-
+    this.transitionEnabled = true;
+    this.noTransition = false;
     this.currentIndex = index;
     this.yearService.setYear(this.getCurrentYear());
-    this.setBackgroundImage(); // Update background image
+    this.setBackgroundImage();
     this.pauseAndResumeAutoplay();
   }
 
@@ -251,10 +255,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
     const year = this.getCurrentYear();
     if (window.innerWidth <= 900) {
       this.backgroundImage = `assets/carousels/${year}.jpg`;
-      console.log(`Setting background image for mobile: ${this.backgroundImage} (width: ${window.innerWidth})`);
     } else {
       this.backgroundImage = '';
-      console.log(`Clearing background image for desktop: ${window.innerWidth}`);
     }
   }
 
@@ -263,7 +265,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     years.forEach(year => {
       const img = new Image();
       img.src = `assets/carousels/${year}.jpg`;
-      console.log(`Preloading background image: ${img.src}`);
     });
   }
 }

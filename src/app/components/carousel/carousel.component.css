@@ -1,5 +1,5 @@
 /* Smooth Transition for the Carousel */
-.flex {
+:host ::ng-deep .carousel-track {
   display: flex;
   transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1) !important;
 }
@@ -127,7 +127,6 @@ select {
     background: rgba(0,0,0,0.55) !important;
     padding: 0.35em 1em !important;
     border-radius: 0.75em !important;
-    -webkit-background-clip: initial !important;
     -webkit-text-fill-color: initial !important;
     display: inline-block;
     margin-top: 0.5em;
@@ -169,7 +168,7 @@ select {
 }
 
 /* Ensure images cover the full viewport */
-.flex img {
+.carousel-track img {
   height: 100vh !important;
   min-height: 100vh !important;
   max-height: 100vh !important;
@@ -276,4 +275,11 @@ button:focus,
 select:focus {
   outline: 2px solid rgba(255, 255, 255, 0.5);
   outline-offset: 2px;
+}
+
+.carousel-track.transition-enabled {
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1) !important;
+}
+.carousel-track.no-transition {
+  transition: none !important;
 }

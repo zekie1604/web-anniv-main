@@ -3,6 +3,7 @@ import { signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MusicService } from '../../services/music.service';
+import { YearService } from '../../services/year.service';
 
 @Component({
   selector: 'app-secret-code',
@@ -16,7 +17,11 @@ export class SecretCodeComponent implements OnInit {
   readonly inputCode = signal('');
   readonly error = signal('');
 
-  constructor(private readonly router: Router, private readonly musicService: MusicService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly musicService: MusicService,
+    private readonly yearService: YearService
+  ) {}
 
   ngOnInit(): void {
     if (sessionStorage.getItem('isAuthenticated') === 'true') {
@@ -33,6 +38,8 @@ export class SecretCodeComponent implements OnInit {
     if (key === 'enter') {
       if (this.inputCode() === this.correctCode) {
         sessionStorage.setItem('isAuthenticated', 'true');
+        sessionStorage.setItem('startCarouselAutoplay', 'true');
+        this.yearService.setYear('2024');
         const randomIndex = Math.floor(Math.random() * this.musicService.songs.length);
         this.musicService.setCurrentSong(randomIndex).then(() => {
           this.musicService.play();
