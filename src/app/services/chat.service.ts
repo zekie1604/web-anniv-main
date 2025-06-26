@@ -260,14 +260,21 @@ export class ChatService {
   private findQandaIntent(userMessage: string): { intent: string, response: string } | null {
     if (!this.qandaData) return null;
     const msg = userMessage.trim().toLowerCase();
+    
     for (const intentObj of this.qandaData.intents) {
       for (const example of intentObj.examples) {
+        // Exact match first
         if (msg === example.trim().toLowerCase()) {
           return { intent: intentObj.intent, response: '' };
         }
-        // Fuzzy match: check if all keywords in example are in msg
+        
+        // More precise fuzzy match: check if all keywords in example are in msg as whole words
         const keywords = example.toLowerCase().split(/\W+/).filter(Boolean);
-        if (keywords.every((k: string) => msg.includes(k))) {
+        if (keywords.length > 0 && keywords.every((k: string) => {
+          // Use word boundary regex to ensure we match whole words only
+          const wordBoundaryRegex = new RegExp(`\\b${k}\\b`, 'i');
+          return wordBoundaryRegex.test(msg);
+        })) {
           return { intent: intentObj.intent, response: '' };
         }
       }
@@ -301,8 +308,39 @@ export class ChatService {
       };
     }
     
+    // Special response for "Zekie-chan?" or "Chelle-chan?"
+    if (msg === 'zekie-chan?' || msg === 'zekie chan?') {
+      return {
+        text: 'Hai!!',
+        image: this.zekieImages.default
+      };
+    }
+    
+    if (msg === 'chelle-chan?' || msg === 'chelle chan?') {
+      return {
+        text: 'Hai!!',
+        image: this.chelleImages.default
+      };
+    }
+    
+    // Special response for "nani ga suki?" (what do you like?)
+    if (msg === 'nani ga suki?' || msg === 'nani ga suki' || msg === 'what do you like?') {
+      return {
+        text: 'Chokominto yori mo a-na-ta!',
+        image: avatar === 'ZEKIE' ? this.zekieImages.food : this.chelleImages.food
+      };
+    }
+    
     // Special response for "after all this time" - check this first before Q&A system
     if (msg === 'after all this time' || msg === 'after all this time?' || msg === 'after all this time!' || msg === 'after all this time.') {
+      return {
+        text: 'Always.',
+        image: avatar === 'ZEKIE' ? this.zekieImages.harryPotter : this.chelleImages.harryPotter
+      };
+    }
+    
+    // Special response for "after all this time" with question mark - handle separately
+    if (msg === 'after all this time?') {
       return {
         text: 'Always.',
         image: avatar === 'ZEKIE' ? this.zekieImages.harryPotter : this.chelleImages.harryPotter
@@ -665,6 +703,14 @@ export class ChatService {
         };
       }
 
+      // Handle questions about best friends
+      if (msg.includes('who is your best friend') || msg.includes('who are your best friends') || msg.includes('best friend') || msg.includes('best friends') || msg.includes('bestfriend') || msg.includes('bestfriends')) {
+        return {
+          text: 'Zekie was my best friend before we fell in love! 💕 We were such close friends, and then one day we both realized our feelings were so much deeper than friendship! It\'s like the best love story ever - falling in love with your best friend! 💖✨',
+          image: this.chelleImages.relationship
+        };
+      }
+
       // Handle questions about Zekie/Kiel/Ezekiel
       if (msg.includes('who is zekie') || msg.includes('who is kiel') || msg.includes('who is ezekiel') || msg.includes('who is ezekiel lucas') ||
           msg.includes('what is zekie') || msg.includes('what is kiel') || msg.includes('what is ezekiel') || msg.includes('what is ezekiel lucas') ||
@@ -723,9 +769,23 @@ export class ChatService {
           image: this.getZekieImageForQuestion(userMessage)
         };
       }
+      
+      // If it's a question, use Gemini API with INTJ personality
+      if (this.isQuestion(userMessage)) {
+        try {
+          const aiResponse = await this.getGeminiINTJResponse(userMessage);
+          return {
+            text: aiResponse,
+            image: this.getZekieImageForQuestion(userMessage)
+          };
+        } catch {
+          // fallback below
+        }
+      }
+      
       // Fallback: custom message for Zekie
       return {
-        text: 'Whoops, Zekie does not program that yet, better ask him personally 😏',
+        text: 'I cannot process that request at the moment.',
         image: this.zekieImages.fallback
       };
     }
@@ -808,6 +868,14 @@ export class ChatService {
           msg.includes('tell me about zekie') || msg.includes('tell me about kiel') || msg.includes('tell me about ezekiel') || msg.includes('tell me about ezekiel lucas')) {
         return {
           text: 'Zekie is my partner! 💕 He\'s an INTJ, the "Architect" personality type. He\'s analytical, strategic, and loves deep thinking. We\'ve been together since June 25, 2021, and he makes every day special! 💖✨',
+          image: this.chelleImages.relationship
+        };
+      }
+
+      // Handle questions about best friends
+      if (msg.includes('who is your best friend') || msg.includes('who are your best friends') || msg.includes('best friend') || msg.includes('best friends') || msg.includes('bestfriend') || msg.includes('bestfriends')) {
+        return {
+          text: 'Zekie was my best friend before we fell in love! 💕 We were such close friends, and then one day we both realized our feelings were so much deeper than friendship! It\'s like the best love story ever - falling in love with your best friend! 💖✨',
           image: this.chelleImages.relationship
         };
       }
@@ -1036,6 +1104,12 @@ export class ChatService {
 
   private isQuestion(msg: string): boolean {
     const trimmed = msg.trim().toLowerCase();
+    
+    // Exclude the Harry Potter reference from being detected as a question
+    if (trimmed === 'after all this time' || trimmed === 'after all this time?' || trimmed === 'after all this time!' || trimmed === 'after all this time.') {
+      return false;
+    }
+    
     return (
       trimmed.endsWith('?') ||
       /^(what|why|how|who|when|where|is|are|do|does|can|could|would|should|will|did|have|has|had)\b/.test(trimmed)
@@ -1043,26 +1117,66 @@ export class ChatService {
   }
 
   private async getGeminiENFPResponse(userMessage: string): Promise<string> {
-    // Use Gemini API to get a supplement, then wrap in ENFP style
-    const prompt = `Answer the following question in a friendly, expressive, and talkative ENFP style. Make your answer two sentences: the first is a direct answer, the second is an enthusiastic or encouraging follow-up.\n\nQuestion: ${userMessage}`;
-    const response = await fetch(`${this.GEMINI_API_URL}?key=${this.GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: prompt
+    try {
+      const response = await fetch(`${this.GEMINI_API_URL}?key=${this.GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `You are Chelle. Keep responses short and enthusiastic. Be naturally warm, friendly, and expressive. Use emojis and exclamation marks. Show genuine interest and excitement. Don't mention personality types or act robotic. Just answer the question in a cheerful, ENFP way. Keep it under 2-3 sentences. Question: ${userMessage}`
+            }]
           }]
-        }]
-      })
-    });
-    const data = await response.json();
-    if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-      return data.candidates[0].content.parts[0].text;
-    } else {
-      return 'Whoops, Chelle does not program that yet, better ask her personally 😏';
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch response');
+      }
+
+      const data = await response.json();
+      if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+        return data.candidates[0].content.parts[0].text;
+      } else {
+        return 'Sorry, I\'m having trouble thinking right now! 😅✨';
+      }
+    } catch (error) {
+      console.error('Error fetching Gemini response:', error);
+      return 'Sorry, I\'m having trouble thinking right now! 😅✨';
+    }
+  }
+
+  private async getGeminiINTJResponse(userMessage: string): Promise<string> {
+    try {
+      const response = await fetch(`${this.GEMINI_API_URL}?key=${this.GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `You are Zekie. Keep responses short and direct. Be naturally analytical and practical. Don't mention personality types or act robotic. Just answer the question in a straightforward, intelligent way. Be slightly sarcastic if appropriate. Keep it under 2-3 sentences. Question: ${userMessage}`
+            }]
+          }]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch response');
+      }
+
+      const data = await response.json();
+      if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+        return data.candidates[0].content.parts[0].text;
+      } else {
+        return 'I cannot process that request at the moment.';
+      }
+    } catch (error) {
+      console.error('Error fetching Gemini response:', error);
+      return 'I cannot process that request at the moment.';
     }
   }
 
