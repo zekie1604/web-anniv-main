@@ -1,5 +1,5 @@
-<div class="relative w-full min-h-[400px] md:min-h-[600px] lg:min-h-[700px] overflow-hidden rounded-lg shadow-xl"
-     [ngStyle]="backgroundImage ? { 'background-image': 'url(' + backgroundImage + ')', 'background-size': 'cover', 'background-position': 'center' } : {}">
+<div class="relative w-full h-[80vh] md:h-screen overflow-hidden rounded-lg shadow-xl"
+     [ngStyle]="backgroundImage ? { 'background-image': 'url(' + backgroundImage + ')', 'background-size': 'cover', 'background-position': 'center', 'background-repeat': 'no-repeat' } : {}">
   <!-- Image Container -->
   <div class="flex transition-transform duration-500 ease-in-out" [class.no-transition]="noTransition" [style.transform]="getTransform()">
     <img *ngFor="let image of images; let i = index"

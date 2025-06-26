@@ -216,13 +216,11 @@ export class ChatService {
     rich: ['rich', 'wealthy', 'money', 'poor', 'broke', 'are you rich', 'are you poor', 'do you have money', 'are you wealthy'],
     kdrama: ['kdrama', 'k-drama', 'korean drama', 'drama', 'korean series', 'korean show', 'korean tv', 'korean television', 'korean entertainment'],
     kpop: ['kpop', 'k-pop', 'korean pop', 'korean music', 'korean songs', 'korean artists', 'korean bands', 'korean singers'],
-    bts: ['bts', 'bangtan', 'bangtan boys', 'bangtan sonyeondan', 'bulletproof boy scouts', 'army', 'bts army', 'bts members', 'rm', 'jin', 'suga', 'j-hope', 'jimin', 'v', 'jungkook'],
   };
 
   private chelleValueDescriptions: { [key: string]: string } = {
     'kdrama': 'Oh my gosh, I LOVE K-dramas! They\'re so emotional and romantic! My favorites are "Crash Landing on You" and "Goblin" - the stories are just magical! 💕✨',
     'kpop': 'K-pop is amazing! The music, the choreography, the fashion - everything is so creative and energetic! It\'s like a whole new world of entertainment! 🎵💫',
-    'bts': 'BTS is absolutely incredible! They\'re not just a K-pop group, they\'re a global phenomenon! Their music speaks to the heart and their message of self-love and hope is so inspiring! RM, Jin, Suga, J-Hope, Jimin, V, and Jungkook are all so talented and genuine! 💜✨'
   };
 
   private lastChelleBotAskedHowAreYou = false;
@@ -294,6 +292,14 @@ export class ChatService {
     await this.loadQandaData();
     
     const msg = userMessage.trim().toLowerCase();
+    
+    // Special response for "boo" or "booo"
+    if (msg === 'boo' || msg === 'booo' || msg === 'boooo') {
+      return {
+        text: 'haha',
+        image: avatar === 'ZEKIE' ? this.zekieImages.default : this.chelleImages.default
+      };
+    }
     
     // Special response for "after all this time" - check this first before Q&A system
     if (msg === 'after all this time' || msg === 'after all this time?' || msg === 'after all this time!' || msg === 'after all this time.') {
@@ -508,7 +514,7 @@ export class ChatService {
       }
     }
     // ... existing code ...
-
+    
     // Handle greetings and 'how are you' for Zekie
     if (avatar === 'ZEKIE') {
       // Check if Zekie is sleeping first
@@ -1163,8 +1169,6 @@ export class ChatService {
             return `OMG, I'm obsessed with K-dramas! 🎭✨ My favorites are "Crash Landing on You" (the romance is just *chef's kiss*), "Goblin" (the bromance is everything!), and "It's Okay to Not Be Okay" (so deep and meaningful!). The storytelling is just magical, and the chemistry between the actors is always amazing! Have you watched any of these? We should totally have a K-drama marathon together! 💕`;
           case 'kpop':
             return `K-pop is my absolute jam! 🎵💫 The music is so diverse - from cute concepts to powerful performances! I love how each group has their own unique style and story. The choreography is always on point, and the fashion is just *chef's kiss*! Plus, the fan culture is so supportive and creative! What's your favorite K-pop group? Let's share our favorite songs! 🎶✨`;
-          case 'bts':
-            return `BTS is everything! 💜✨ They're not just a K-pop group, they're a movement! Their music has helped so many people, including me! From "Spring Day" to "Butter" to "Dynamite", every song tells a story. And the members - RM, Jin, Suga, J-Hope, Jimin, V, and Jungkook - they're all so talented and genuine! Their message of self-love and hope is so inspiring! Are you ARMY too? Let's be friends! 💕`;
         }
       }
     }

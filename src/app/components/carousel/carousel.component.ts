@@ -58,7 +58,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.yearService.setYear(this.getCurrentYear());
     }
     // Set index without transition to avoid sliding animation
-    this.currentIndex = idx;
+      this.currentIndex = idx;
     this.setBackgroundImage();
     
     // Enable transitions after a short delay to prevent initial sliding
@@ -68,7 +68,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }, 300);
     
     // Start autoplay for smoother UX
-    setTimeout(() => this.startAutoplay(), 500);
+      setTimeout(() => this.startAutoplay(), 500);
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     window.addEventListener('resize', this.setBackgroundImage);
   }
