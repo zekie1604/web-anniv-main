@@ -143,9 +143,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.clearResumeTimeout();
     this.resumeTimeout = setTimeout(() => {
       this.nextImage(false); // Immediately advance after delay
-      this.autoplayInterval = setInterval(() => {
-        this.nextImage(false);
-      }, this.AUTOPLAY_DELAY);
+    this.autoplayInterval = setInterval(() => {
+      this.nextImage(false);
+    }, this.AUTOPLAY_DELAY);
     }, delay);
   }
 
@@ -180,16 +180,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Move to the previous image
   prevImage(user = true): void {
-    if (this.currentIndex === 0) {
+      if (this.currentIndex === 0) {
       // Instantly jump to last image, no transition
       this.transitionEnabled = false;
       this.noTransition = true;
-      this.currentIndex = this.images.length - 1;
+        this.currentIndex = this.images.length - 1;
       this.yearService.setYear(this.getCurrentYear());
       this.setBackgroundImage();
       setTimeout(() => {
         this.transitionEnabled = true;
-        this.noTransition = false;
+            this.noTransition = false;
       }, 20);
     } else {
       this.transitionEnabled = true;
@@ -203,16 +203,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Move to the next image
   nextImage(user = true): void {
-    if (this.currentIndex === this.images.length - 1) {
+      if (this.currentIndex === this.images.length - 1) {
       // Instantly jump to first image, no transition
       this.transitionEnabled = false;
       this.noTransition = true;
-      this.currentIndex = 0;
+        this.currentIndex = 0;
       this.yearService.setYear(this.getCurrentYear());
       this.setBackgroundImage();
       setTimeout(() => {
         this.transitionEnabled = true;
-        this.noTransition = false;
+            this.noTransition = false;
       }, 20);
     } else {
       this.transitionEnabled = true;

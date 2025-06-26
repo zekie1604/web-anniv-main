@@ -706,8 +706,8 @@ export class ChatService {
       // Handle questions about best friends
       if (msg.includes('who is your best friend') || msg.includes('who are your best friends') || msg.includes('best friend') || msg.includes('best friends') || msg.includes('bestfriend') || msg.includes('bestfriends')) {
         return {
-          text: 'Zekie was my best friend before we fell in love! 💕 We were such close friends, and then one day we both realized our feelings were so much deeper than friendship! It\'s like the best love story ever - falling in love with your best friend! 💖✨',
-          image: this.chelleImages.relationship
+          text: 'Before we became a couple, Chelle was my best friend. Our relationship developed from a strong foundation of trust and understanding. It’s efficient—falling in love with your best friend eliminates unnecessary complications. 💖✨',
+          image: this.zekieImages.relationship
         };
       }
 
@@ -717,7 +717,7 @@ export class ChatService {
           msg.includes('tell me about zekie') || msg.includes('tell me about kiel') || msg.includes('tell me about ezekiel') || msg.includes('tell me about ezekiel lucas')) {
         return {
           text: 'Zekie is my partner! 💕 He\'s an INTJ, the "Architect" personality type. He\'s analytical, strategic, and loves deep thinking. We\'ve been together since June 25, 2021, and he makes every day special! 💖✨',
-          image: this.chelleImages.relationship
+          image: this.zekieImages.relationship
         };
       }
 
