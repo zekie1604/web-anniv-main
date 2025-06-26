@@ -939,6 +939,18 @@ export class ChatService {
   private getZekieProfileAnswer(userMessage: string): string | null {
     if (!this.zekieProfile) return null;
     const msg = userMessage.toLowerCase();
+    
+    // Check for meeting questions first (this will catch any name variations)
+    if (this.isMeetingQuestion(userMessage)) {
+      if (msg.includes('first met') || msg.includes('met each other') || msg.includes('how did you meet') || msg.includes('how did you and') || msg.includes('how did you two meet') || msg.includes('when did you meet') || msg.includes('where did you meet')) {
+        return `We were college classmates at Bulacan State University.`;
+      } else if (msg.includes('confess') || msg.includes('first move') || msg.includes('who started') || msg.includes('who made the first move')) {
+        return `Chelle confessed to me via Messenger.`;
+      }
+      // Default response for any other how they met questions
+      return `We were college classmates at Bulacan State University.`;
+    }
+    
     // Check for specific value queries
     for (const [key, desc] of Object.entries(this.zekieValueDescriptions)) {
       if (msg.includes(key)) {
@@ -1116,6 +1128,34 @@ export class ChatService {
     );
   }
 
+  private isMeetingQuestion(userMessage: string): boolean {
+    const msg = userMessage.toLowerCase();
+    
+    // Check for meeting-related patterns
+    const meetingPatterns = [
+      /how did you meet/i,
+      /how did you and .* meet/i,
+      /when did you meet/i,
+      /where did you meet/i,
+      /how did you first meet/i,
+      /how did you two meet/i,
+      /how did you both meet/i,
+      /how did you guys meet/i,
+      /how did you meet each other/i,
+      /how did you met/i,
+      /how did you and .* met/i,
+      /when did you met/i,
+      /where did you met/i,
+      /how did you first met/i,
+      /how did you two met/i,
+      /how did you both met/i,
+      /how did you guys met/i,
+      /how did you met each other/i
+    ];
+    
+    return meetingPatterns.some(pattern => pattern.test(msg));
+  }
+
   private async getGeminiENFPResponse(userMessage: string): Promise<string> {
     try {
       const response = await fetch(`${this.GEMINI_API_URL}?key=${this.GEMINI_API_KEY}`, {
@@ -1183,6 +1223,18 @@ export class ChatService {
   private getChelleProfileAnswer(userMessage: string): string | null {
     if (!this.chelleProfile) return null;
     const msg = userMessage.toLowerCase();
+    
+    // Check for meeting questions first (this will catch any name variations)
+    if (this.isMeetingQuestion(userMessage)) {
+      if (msg.includes('first met') || msg.includes('met each other') || msg.includes('how did you meet') || msg.includes('how did you and') || msg.includes('how did you two meet') || msg.includes('when did you meet') || msg.includes('where did you meet')) {
+        return `We were college classmates at Bulacan State University! But we didn't really talk to each other until we were both graduated and when he started his preparation for the Licensure Exam for Teachers 😊💕`;
+      } else if (msg.includes('confess') || msg.includes('first move') || msg.includes('who started') || msg.includes('who made the first move')) {
+        return `I confessed to him via Messenger because he was too slow to make a move! 💌💖`;
+      }
+      // Default response for any other how they met questions
+      return `We were college classmates at Bulacan State University! But we didn't really talk to each other until we were both graduated and when he started his preparation for the Licensure Exam for Teachers 😊💕`;
+    }
+    
     for (const [field, synonyms] of Object.entries(this.chelleFieldSynonyms)) {
       if (synonyms.some(syn => msg.includes(syn))) {
         switch (field) {
