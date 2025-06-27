@@ -145,6 +145,7 @@ export class ChatService {
     favoriteFood: ['favorite food', 'food you like', 'best food', 'what do you like to eat', 'what\'s your favorite food'],
     introvert: ['introvert', 'introverted', 'are you introvert', 'are you introverted', 'do you like being alone', 'do you prefer being alone'],
     rich: ['rich', 'wealthy', 'money', 'poor', 'broke', 'are you rich', 'are you poor', 'do you have money', 'are you wealthy'],
+    advice: ['advice', 'advices', 'what advice', 'what are your advice', 'give me advice', 'can you give me advice', 'do you have advice', 'what advice do you have'],
   };
 
   private zekieValueDescriptions: { [key: string]: string } = {
@@ -216,6 +217,7 @@ export class ChatService {
     rich: ['rich', 'wealthy', 'money', 'poor', 'broke', 'are you rich', 'are you poor', 'do you have money', 'are you wealthy'],
     kdrama: ['kdrama', 'k-drama', 'korean drama', 'drama', 'korean series', 'korean show', 'korean tv', 'korean television', 'korean entertainment'],
     kpop: ['kpop', 'k-pop', 'korean pop', 'korean music', 'korean songs', 'korean artists', 'korean bands', 'korean singers'],
+    advice: ['advice', 'advices', 'what advice', 'what are your advice', 'give me advice', 'can you give me advice', 'do you have advice', 'what advice do you have'],
   };
 
   private chelleValueDescriptions: { [key: string]: string } = {
@@ -706,7 +708,7 @@ export class ChatService {
       // Handle questions about best friends
       if (msg.includes('who is your best friend') || msg.includes('who are your best friends') || msg.includes('best friend') || msg.includes('best friends') || msg.includes('bestfriend') || msg.includes('bestfriends')) {
         return {
-          text: 'Before we became a couple, Chelle was my best friend. Our relationship developed from a strong foundation of trust and understanding. It’s efficient—falling in love with your best friend eliminates unnecessary complications. 💖✨',
+          text: 'Before we became a couple, Chelle was my best friend. Our relationship developed from a strong foundation of trust and understanding. It\'s efficient—falling in love with your best friend eliminates unnecessary complications.',
           image: this.zekieImages.relationship
         };
       }
@@ -716,7 +718,7 @@ export class ChatService {
           msg.includes('what is zekie') || msg.includes('what is kiel') || msg.includes('what is ezekiel') || msg.includes('what is ezekiel lucas') ||
           msg.includes('tell me about zekie') || msg.includes('tell me about kiel') || msg.includes('tell me about ezekiel') || msg.includes('tell me about ezekiel lucas')) {
         return {
-          text: 'Zekie is my partner! 💕 He\'s an INTJ, the "Architect" personality type. He\'s analytical, strategic, and loves deep thinking. We\'ve been together since June 25, 2021, and he makes every day special! 💖✨',
+          text: 'I am Zekie. I\'m an INTJ, the "Architect" personality type. I prefer analytical thinking and strategic planning. I value efficiency and logical approaches to problems.',
           image: this.zekieImages.relationship
         };
       }
@@ -982,6 +984,7 @@ export class ChatService {
             }
             return `Yes, I'm a licensed teacher since ${this.zekieProfile.professionalStatus.examYear}. I currently work in a public school. Teaching requires both knowledge and adaptability.`;
           case 'vices':
+            if (msg.includes('advice') || msg.includes('advices')) break; // skip if the message is about advice
             return `I don't smoke or drink. I avoid vices—they're inefficient and counterproductive.`;
           case 'skills':
             return `My skills include ${this.zekieProfile.skills.join(', ')}. I prefer to master a few things rather than dabble in many.`;
@@ -1075,6 +1078,8 @@ export class ChatService {
           }
           case 'favoriteAnimeCharacter':
             return `My favorite anime character is Subaru from Re:Zero. Episode 15. That's all I need to say.`;
+          case 'advice':
+            return `Foundation is crucial in any relationship. It builds respect, loyalty, trust, and love. Always ensure you have each other's best interests at heart. Communication and mutual understanding are the cornerstones of lasting relationships.`;
         }
       }
     }
@@ -1252,6 +1257,7 @@ export class ChatService {
             }
             return `Yes, I'm a licensed teacher. ${this.chelleProfile['Professional Status']['License Info']} I work in a public school and love inspiring my students every day! Teaching is such a rewarding experience! 🍎💕`;
           case 'vices':
+            if (msg.includes('advice') || msg.includes('advices')) break; // skip if the message is about advice
             return `I don't smoke or drink. I avoid vices! Staying healthy means more energy for fun things! 💪✨`;
           case 'skills':
             return `My skills include ${this.chelleProfile['Skills'].join(', ')}. I love discovering new talents—what about you? 🎨💫`;
@@ -1335,6 +1341,8 @@ export class ChatService {
             return `OMG, I'm obsessed with K-dramas! 🎭✨ My favorites are "Crash Landing on You" (the romance is just *chef's kiss*), "Goblin" (the bromance is everything!), and "It's Okay to Not Be Okay" (so deep and meaningful!). The storytelling is just magical, and the chemistry between the actors is always amazing! Have you watched any of these? We should totally have a K-drama marathon together! 💕`;
           case 'kpop':
             return `K-pop is my absolute jam! 🎵💫 The music is so diverse - from cute concepts to powerful performances! I love how each group has their own unique style and story. The choreography is always on point, and the fashion is just *chef's kiss*! Plus, the fan culture is so supportive and creative! What's your favorite K-pop group? Let's share our favorite songs! 🎶✨`;
+          case 'advice':
+            return `Foundation is everything in relationships! 💕 It builds respect, loyalty, trust, and love - the perfect recipe for lasting happiness! Always make sure you have each other's best interests at heart, because that's what true love is all about! Communication and understanding each other are the keys to a beautiful relationship! ✨💖`;
         }
       }
     }
