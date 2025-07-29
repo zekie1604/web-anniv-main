@@ -1,7 +1,7 @@
 <header #headerRef class="absolute top-0 left-0 w-full bg-transparent text-white py-2 z-50">
-  <div class="container mx-auto flex justify-between items-center px-4">
+  <div class="flex justify-between items-center px-6 lg:px-8 xl:px-12">
     <!-- Left Section with Logo -->
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center -ml-2 lg:-ml-3 xl:-ml-4">
       <!-- Logo -->
       <img src="assets/logo.png" alt="Logo" class="h-18 w-auto cursor-pointer" (click)="navigateToHome()">
     </div>
@@ -14,9 +14,12 @@
     </button>
 
     <!-- Navigation Links on the Right (hidden on mobile) -->
-    <nav class="hidden md:flex items-center space-x-6">
+    <nav class="hidden md:flex items-center">
+      <div class="flex items-center space-x-5">
       <button (click)="navigateToHome()" class="hover:text-gray-300 bg-transparent border-none p-2 text-inherit cursor-pointer transition-colors duration-200">Home</button>
-      <button (click)="navigateToTimeline()" class="hover:text-gray-300 bg-transparent border-none p-0 m-0 text-inherit cursor-pointer transition-colors duration-200 mr-4">Timeline</button>
+        <button (click)="navigateToTimeline()" class="hover:text-gray-300 bg-transparent border-none p-0 m-0 text-inherit cursor-pointer transition-colors duration-200">Timeline</button>
+      </div>
+      <div class="flex items-center space-x-4 lg:space-x-6 xl:space-x-8" style="margin-left: 0.25rem;">
       <div class="relative inline-block">
         <button class="hover:text-gray-300 relative transition-colors duration-200" (click)="showGames = !showGames; showNews = false; $event.preventDefault();">Games</button>
         <div *ngIf="showGames" class="absolute right-0 mt-2 w-44 bg-white text-gray-900 rounded-lg shadow-lg p-4 z-50 text-sm">
@@ -35,6 +38,7 @@
             <li>Chatbots is now smarter and more interactive.</li>
             <li>Fixed the issue on larger screens.</li>
           </ul>
+          </div>
         </div>
       </div>
     </nav>

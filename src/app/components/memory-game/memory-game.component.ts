@@ -716,7 +716,7 @@ export class MemoryGameComponent {
     const messages = {
       ZEKIE: {
         userWrong: 'Lol',
-        userRight: 'Damn',
+        userRight: '****',
         aiWrong: 'Seriously?',
         aiRight: 'Check',
         aiWin: 'Checkmate',

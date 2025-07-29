@@ -31,7 +31,8 @@ export class MusicService {
     { name: 'Ben&Ben - Paninindigan Kita', src: 'assets/Ben&Ben - Paninindigan Kita.mp3' },
     { name: 'Weathering With You - Grand Escape', src: 'assets/Weathering With You - Grand Escape.mp3' },
     { name: 'Mrs. GREEN APPLE - 青と夏', src: 'assets/Mrs. GREEN APPLE - 青と夏.mp3' },
-    { name: '10CM Spring Snow-Lovely Runner OST', src: 'assets/10CM \'Spring Snow-Lovely Runner OST.mp3' }
+    { name: '10CM Spring Snow-Lovely Runner OST', src: 'assets/10CM \'Spring Snow-Lovely Runner OST.mp3' },
+    { name: 'I Really Want to Stay at Your House', src: 'assets/Rosa Walton & Hallie Coggins - I Really Want to Stay at Your House.mp3' }
   ];
 
   constructor() {

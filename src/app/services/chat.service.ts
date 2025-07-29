@@ -802,6 +802,14 @@ export class ChatService {
         };
       }
 
+      // Special case for Chelle's birthday
+      if (msg.includes('birthday')) {
+        return {
+          text: "My birthday is on November 4th! I love celebrating with friends, cake, and lots of fun! 🎂💖",
+          image: this.chelleImages.default
+        };
+      }
+
       // Special case for labidabs/love questions
       if (msg.includes('labidabs') || (msg.includes('what') && msg.includes('love')) || (msg.includes('who') && msg.includes('love'))) {
         return {

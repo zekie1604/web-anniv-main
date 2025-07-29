@@ -42,6 +42,18 @@ export class TimelineComponent {
     { id: 1, image: 'assets/timeline/1.jpg', title: '1st Valentines as BFF', description: '', date: 'February 2021' }
   ];
 
+  // Preload adjacent images (previous and next)
+  preloadAdjacentImages(): void {
+    const prevIndex = this.currentIndex > 0 ? this.currentIndex - 1 : null;
+    const nextIndex = this.currentIndex < this.timelineEvents.length - 1 ? this.currentIndex + 1 : null;
+    [prevIndex, nextIndex].forEach(idx => {
+      if (idx !== null && this.timelineEvents[idx].image) {
+        const img = new window.Image();
+        img.src = this.timelineEvents[idx].image;
+      }
+    });
+  }
+
   constructor(
     private route: ActivatedRoute,
     private yearService: YearService
@@ -52,9 +64,11 @@ export class TimelineComponent {
       if (window.innerWidth <= 900) {
         this.backgroundImage = `assets/backgrounds/${year}.jpg`;
       } else {
-      this.backgroundImage = `assets/${year}.png`;
+        this.backgroundImage = `assets/${year}.png`;
       }
     });
+    // Preload adjacent images on initialization
+    this.preloadAdjacentImages();
   }
 
   getBackgroundSize(): string {
@@ -90,12 +104,14 @@ export class TimelineComponent {
   // Navigate to a specific event
   goToEvent(index: number): void {
     this.currentIndex = index;
+    this.preloadAdjacentImages();
   }
 
   // Navigate to previous event
   previousEvent(): void {
     if (this.currentIndex > 0) {
       this.currentIndex--;
+      this.preloadAdjacentImages();
     }
     // Don't allow going beyond the Coming Soon! event (index 0)
   }
@@ -104,6 +120,7 @@ export class TimelineComponent {
   nextEvent(): void {
     if (this.currentIndex < this.timelineEvents.length - 1) {
       this.currentIndex++;
+      this.preloadAdjacentImages();
     }
     // Don't allow going beyond the last event (index 14)
   }

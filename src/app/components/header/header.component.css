@@ -11,17 +11,35 @@
   margin-left: 0.2em;
 }
 
+/* Header container styles */
+header {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Navigation styles for desktop */
 nav, .nav-main {
-  margin-right: 32px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 0.3rem;
 }
 
 nav .nav-link, .nav-main .nav-link {
   padding: 0.2rem 0.5rem;
   min-width: unset;
+}
+
+/* Responsive adjustments */
+@media (min-width: 1024px) {
+  nav {
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  nav {
+    gap: 2rem;
+  }
 }
 
 @media (max-width: 900px) {
