@@ -1,5 +1,5 @@
-import { NgFor, NgStyle } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit, effect } from '@angular/core';
+import { NgFor, NgStyle, NgClass } from '@angular/common';
+import { Component, inject, OnDestroy, OnInit, effect, ChangeDetectorRef } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { MusicService } from '../../services/music.service';
 import { YearService } from '../../services/year.service';
@@ -7,7 +7,7 @@ import { YearService } from '../../services/year.service';
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [NgFor, NgStyle, RouterModule],
+  imports: [NgFor, NgStyle, NgClass, RouterModule],
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css']
 })
@@ -23,6 +23,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     'assets/2023.png',
     'assets/2022.png',
     'assets/2021.png',
+  ];
+
+  // Mobile-specific background images
+  public mobileBackgrounds = [
+    'assets/2024mobile.png',
+    'assets/2023mobile.png',
+    'assets/2022mobile.png',
+    'assets/2021mobile.png',
   ];
 
   // Array of icon paths (one for each image)
@@ -51,8 +59,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
   private transitionsEnabled = false; // Flag to track if transitions should be enabled
   private firstRender = true; // Prevent transition on first render
   public transitionEnabled = false;
+  public isMobileView = window.innerWidth <= 900;
+  private resizeListener: any;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     effect(() => {
       const currentYear = this.yearService.getYear();
       const idx = this.images.findIndex(img => img.includes(currentYear()));
@@ -69,6 +79,15 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }
       this.setBackgroundImage();
     });
+    // Listen for window resize
+    this.resizeListener = () => {
+      const wasMobile = this.isMobileView;
+      this.isMobileView = window.innerWidth <= 900;
+      if (this.isMobileView !== wasMobile) {
+        this.cdr.detectChanges();
+      }
+    };
+    window.addEventListener('resize', this.resizeListener);
   }
 
   private forceReflow(callback: () => void) {
@@ -126,7 +145,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.routerSubscription.unsubscribe();
     }
     document.removeEventListener('visibilitychange', this.handleVisibilityChange);
-    window.removeEventListener('resize', this.setBackgroundImage);
+    window.removeEventListener('resize', this.resizeListener);
   }
 
   private handleVisibilityChange = () => {
@@ -253,18 +272,34 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   setBackgroundImage = () => {
     const year = this.getCurrentYear();
-    if (window.innerWidth <= 900) {
-      this.backgroundImage = `assets/carousels/${year}.jpg`;
+    const idx = this.images.findIndex(img => img.includes(year));
+    if (this.isMobileView) {
+      // Use mobile-specific backgrounds if available
+      if (idx !== -1 && this.mobileBackgrounds[idx]) {
+        this.backgroundImage = this.mobileBackgrounds[idx];
+      } else {
+        this.backgroundImage = '';
+      }
     } else {
       this.backgroundImage = '';
     }
   }
 
   private preloadBackgroundImages(): void {
-    const years = ['2021', '2022', '2023', '2024'];
-    years.forEach(year => {
+    // Preload both desktop and mobile backgrounds
+    const allBackgrounds = [
+      'assets/carousels/2021.jpg',
+      'assets/carousels/2022.jpg',
+      'assets/carousels/2023.jpg',
+      'assets/carousels/2024.jpg',
+      'assets/2021mobile.png',
+      'assets/2022mobile.png',
+      'assets/2023mobile.png',
+      'assets/2024mobile.png',
+    ];
+    allBackgrounds.forEach(src => {
       const img = new Image();
-      img.src = `assets/carousels/${year}.jpg`;
+      img.src = src;
     });
   }
 }

@@ -1,13 +1,18 @@
 <div class="relative w-full h-[80vh] md:h-screen overflow-hidden rounded-lg shadow-xl"
-     [ngStyle]="backgroundImage ? { 'background-image': 'url(' + backgroundImage + ')', 'background-size': 'cover', 'background-position': 'center', 'background-repeat': 'no-repeat' } : {}">
+     [ngClass]="{ 'carousel-mobile-tall': isMobileView }"
+     [ngStyle]="backgroundImage ? { 'background-image': 'url(' + backgroundImage + ')', 'background-size': isMobileView ? '80% auto' : 'cover', 'background-position': 'center', 'background-repeat': 'no-repeat' } : {}">
   <!-- Minimal Carousel Debug Example -->
   <div class="carousel-track" [class.transition-enabled]="transitionEnabled" [class.no-transition]="!transitionEnabled" [style.transform]="getTransform()">
     <img *ngFor="let image of images; let i = index"
-      [src]="image"
+      [src]="isMobileView ? mobileBackgrounds[i] : image"
       alt="Carousel Image"
+      [ngClass]="{ 'carousel-mobile-zoom': isMobileView }"
       class="w-full h-full object-cover rounded-lg min-h-[300px]">
     <!-- Clone of the first image for infinite loop -->
-    <img [src]="images[0]" alt="Carousel Image" class="w-full h-full object-cover rounded-lg min-h-[300px]">
+    <img [src]="isMobileView ? mobileBackgrounds[0] : images[0]"
+      alt="Carousel Image"
+      [ngClass]="{ 'carousel-mobile-zoom': isMobileView }"
+      class="w-full h-full object-cover rounded-lg min-h-[300px]">
   </div>
   <button (click)="currentIndex = (currentIndex + 1) % images.length">Next</button>
 
