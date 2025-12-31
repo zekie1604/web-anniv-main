@@ -610,7 +610,7 @@
       }
     },
     {
-      "intent": "family_details",
+      "intent": "family",
       "examples": [
         "Can you tell me more about your families?",
         "What do you know about each other's parents?",

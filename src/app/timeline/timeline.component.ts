@@ -26,6 +26,7 @@ export class TimelineComponent {
   // Timeline events with 12 slots (you can add actual images and content later)
   timelineEvents: TimelineEvent[] = [
     { id: 0, image: '', title: 'Coming Soon!', description: '', date: 'Future' },
+    { id: 14, image: 'assets/timeline/15.jpg', title: 'Chelle\'s Birthday', description: '', date: 'November 2025' },
     { id: 14, image: 'assets/timeline/14.jpg', title: 'Third Anniversary', description: '', date: 'June 2025' },
     { id: 13, image: 'assets/timeline/13.jpg', title: '5th Valentine\'s Date', description: '', date: 'February 2025' },
     { id: 12, image: 'assets/timeline/12.jpg', title: 'Chelle\'s Birthday', description: '', date: 'November 2024' },

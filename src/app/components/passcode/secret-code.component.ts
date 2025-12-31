@@ -39,7 +39,7 @@ export class SecretCodeComponent implements OnInit {
       if (this.inputCode() === this.correctCode) {
         sessionStorage.setItem('isAuthenticated', 'true');
         sessionStorage.setItem('startCarouselAutoplay', 'true');
-        this.yearService.setYear('2024');
+        this.yearService.setYear('2025');
         const randomIndex = Math.floor(Math.random() * this.musicService.songs.length);
         this.musicService.setCurrentSong(randomIndex).then(() => {
           this.musicService.play();

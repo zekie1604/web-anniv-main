@@ -19,6 +19,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Array of image paths
   public images = [
+    'assets/2025.png',
     'assets/2024.png',
     'assets/2023.png',
     'assets/2022.png',
@@ -35,6 +36,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Array of icon paths (one for each image)
   icons = [
+    'assets/25.png',
     'assets/24.png',
     'assets/23.png',
     'assets/22.png',
@@ -43,6 +45,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   // Array of text descriptions (one for each image)
   texts = [
+    "New Opportunities, Drawing Hearts Closer",
     "Love Stands Strong During Life's Trials",
     "Unbreakable Bond: Love That Thrives",
     "Discovering Each Other, Day by Day",

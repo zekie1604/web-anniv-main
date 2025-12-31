@@ -54,6 +54,10 @@ export class VideosComponent implements OnInit {
     'https://www.youtube.com/embed/bt4sLypHccU',
     'https://www.youtube.com/embed/V6cAxDyMjdY',
   ];
+  videoUrls2025: string[] = [
+    'https://www.youtube.com/embed/eHfZkiBZdZI',
+    'https://www.youtube.com/embed/xTwjxX7ZsXA',
+  ];
 
   get videoUrls(): string[] {
     switch (this.currentYear) {
@@ -61,11 +65,12 @@ export class VideosComponent implements OnInit {
       case '2022': return this.videoUrls2022;
       case '2023': return this.videoUrls2023;
       case '2024': return this.videoUrls2024;
-      default: return this.videoUrls2024;
+      case '2025': return this.videoUrls2025;
+      default: return this.videoUrls2025;
     }
   }
 
-  selectedVideo: string = this.videoUrls2024[0];
+  selectedVideo: string = this.videoUrls2025[0];
 
   constructor(
     private yearService: YearService,
